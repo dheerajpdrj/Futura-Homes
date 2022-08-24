@@ -1,0 +1,175 @@
+<div class="main-container mb-3" style="margin-top: 4rem;">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#bannerModal">
+        Add Banner
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="bannerModal" tabindex="-1" aria-labelledby="bannerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bannerModalLabel">Banner</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin/addbanner" method="post" enctype="multipart/form-data">
+                        <label class="form-label" for="form3Example1c"> Select Product</label>
+                        <select name="Product" class="form-control" id="product">
+                            {{#each product}}
+                            <option value="{{this._id}}">{{this.Name}}</option>
+                            {{/each}}
+                        </select>
+                        <div class="form-group">
+                            <label for="exampleInputBanner">Banner Heading</label>
+                            <input type="text" class="form-control" id="exampleInputBanner" name="Heading"
+                                aria-describedby="emailHelp">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputDescription">Description</label>
+                            <input type="text" class="form-control" id="exampleInputDescription" name="Description">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputDescription">Image</label>
+                            <input type="file" class="form-control" id="exampleInputDescription" name="Image">
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+{{!-- <p>Banner view Part</p> --}}
+
+<div class="main-container">
+
+    <table class="table border" id="bannerid">
+        <thead>
+            <tr>
+                <th scope="col">Heading</th>
+                <th scope="col">Description</th>
+                <th scope="col">Image</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each allbanner}}
+            <tr>
+                <td>{{this.Heading}}</td>
+                <td>{{this.Description}}</td>
+                <td><img src="/product-images/{{this._id}}.jpg" alt="" width="100"></td>
+                <td>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{this._id}}">
+                        Edit
+                    </button>
+                    <!--Edit Banner Modal -->
+                    <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header ">
+                                    <h5 class="modal-title " id="exampleModalLabel" style="text-align: center;">Category
+                                    </h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/admin/editbanner/{{this._id}}" method="post"
+                                        enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="exampleInputBanner">Banner Heading</label>
+                                            <input type="text" class="form-control" id="exampleInputBanner"
+                                                name="Heading" aria-describedby="emailHelp" value="{{this.Heading}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputDescription">Description</label>
+                                            <input type="text" class="form-control" id="exampleInputDescription"
+                                                name="Description" value="{{this.Description}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputDescription">Image</label>
+                                            <img src="/product-images/{{this._id}}.jpg"
+                                                style="width: 100px; height: auto;" alt="" id="imageView">
+                                            <input type="file" class="form-control" id="exampleInputDescription"
+                                                name="Image" onchange="viewimage(event)">
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+
+
+
+                <td>
+                    <!--  Delete Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalCenter">
+                        Delete
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <h2>Are You Sure</h2>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button style="border: none;"><a href="/admin/deletebanner/{{this._id}}"
+                                            class="btn btn-danger">Delete</a></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#bannerid').DataTable();
+    });
+</script>
+
+<script>
+    function viewimage(event){
+        document.getElementById('imageView').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>
+
+
+{{!-- <p>Banner view Part</p> --}}

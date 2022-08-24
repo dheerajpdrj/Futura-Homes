@@ -1,0 +1,31 @@
+<div class="container height-100 d-flex justify-content-center align-items-center">
+    <div class="position-relative">
+        <div class="card p-2 text-center">
+            {{#if error}}
+            <p style="color: red;">{{error}}</p>
+            {{/if}}
+            <h6>Please enter the one time password <br> to verify your account</h6>
+            
+            <form action="/validate-otp" method="post">
+                <div id="otp" class="inputs d-flex  justify-content-center mt-2">
+                    <input class=" form-control rounded" type="text" id="first" maxlength="6" name="otp"
+                        style="width: 10rem;" />
+                </div>
+                <!-- userdata -->
+                <input class="invisible" name="name" value="{{userdetails.Fname}}">
+                <input class="invisible" name="email" value="{{userdetails.Lname}}">
+                <input class="invisible" name="number" value="{{userdetails.Mobile}}">
+                <input class="invisible" name="password" value="{{userdetails.Password}}">
+
+
+
+
+                <!-- userdata -->
+
+                <button type="submit" class="btn btn-danger px-4 validate mt-4">Validate</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+<link rel="stylesheet" href="/stylesheets/otppage.css">

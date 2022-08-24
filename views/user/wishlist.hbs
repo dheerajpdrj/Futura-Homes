@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header" style="font-size: 140%;">
+            My Wishlist
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                {{#each wishlist.wishlistItems}}
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="/product-images/{{this._id}}.jpg" alt=""  style=" width: 7rem;height: 100px;" >
+                        </td>
+                        <td>{{this.Name}}</td>
+                        <td>{{this.Price}}</td>
+                        <td> <a href="/deletewishlist/{{this._id}}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>

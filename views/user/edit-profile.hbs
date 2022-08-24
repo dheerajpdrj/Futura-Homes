@@ -1,0 +1,41 @@
+<div class="container card shadow-lg" style="width: 50%; margin-top: px;">
+    <form action="/edituser", method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="Fullname">First Name</label>
+            <input type="text" class="form-control" id="Inputname" aria-describedby="nameHelp" placeholder="Enter Name"
+               value="{{userdata.Fname}}" name="fname">
+        </div>
+         <div class="form-group">
+            <label for="Fullname">Last Name</label>
+            <input type="text" class="form-control" id="Inputname" aria-describedby="nameHelp" placeholder="Enter Name"
+              value="{{userdata.Lname}}"  name="lname">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Enter email" value="{{userdata.Email}}" name="email">
+        </div>
+
+        <div class="form-group">
+            <label for="Mobileno">Mobile</label>
+            <input type="number" class="form-control" id="Inputmobile" aria-describedby="nameHelp"
+                placeholder="Enter MobileNo" value="{{userdata.Mobile}}" name="mobilenumber">
+        </div>
+
+        <div class="form-group">
+            <label for="Mobileno">Alt Number</label>
+            <input type="text" class="form-control" id="Inputname" aria-describedby="nameHelp"
+                placeholder="Enter MobileNo" value="{{userdata.AltMobile}}" name="altmobnumber">
+        </div>
+
+        <div class="form-group">
+            <label for="Mobileno">Choose Image</label>
+            <input type="file" class="form-control" id="Inputname" aria-describedby="nameHelp"
+                placeholder="choosepropic" value="" name="profilepic">
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

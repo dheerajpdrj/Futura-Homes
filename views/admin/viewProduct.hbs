@@ -1,0 +1,247 @@
+{{!-- <p>Add Products Starts Here......</p> --}}
+
+
+{{!-- <p>modal starts here........</p> --}}
+
+<div class="main-container mb-3" style="margin-top: 4rem;">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    AddProduct
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">AddProduct</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/admin/products/addproduct" method="post" enctype="multipart/form-data">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="exampleInputEmail1">Name</label>
+                <input type="text" class="form-control" id="exampleInputEmail1" name="Name" aria-describedby="emailHelp"
+                  placeholder="Product Name">
+
+              </div>
+              <div class="form-group col-md-6">
+                <label for="exampleInputPassword1">Stock</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" name="Stock" placeholder="Stock">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="exampleInputPassword1">Price</label>
+                <input type="number" class="form-control" name="Price" id="exampleInputPassword1" placeholder="Price">
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="exampleInputPassword1">Discount Price</label>
+                <input type="number" class="form-control" id="exampleInputPassword1" name="DiscountedPrice"
+                  placeholder="DiscountPrice">
+              </div>
+
+
+              <div class="form-group col-md-6">
+                <label for="exampleInputPassword1">Category</label>
+
+                <select name="Category" class="form-control">
+                  {{#each category}}
+                  <option value="{{this._id}}">{{this.CategoryName}}</option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="exampleInputPassword1">Description</label>
+                <input type="text" class="form-control" id="exampleInputPassword1" name="Description"
+                  placeholder="Description">
+              </div>
+
+              <div class="form-group col-md-12">
+                <label for="exampleInputPassword1">Image</label>
+                <input type="file" class="form-control" id="exampleInputPassword1" name="Image"
+                  placeholder="Choose Image">
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- <p>modal ends here........</p> --}}
+
+
+
+
+
+<div class="main-container row">
+  <div class="col-md-12 col-sm-6 ">
+    <table class="table border" id="adminProductTable">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Price</th>
+          <th scope="col">Discount-Price</th>
+          <th scope="col">Category</th>
+          <th scope="col">Description</th>
+          <th scope="col">Image</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+
+      </thead>
+      <tbody>
+        {{#each allproducts}}
+        <tr>
+          <td>{{this.Name}}</td>
+          <td>{{this.Stock}}</td>
+          <td>{{this.Price}}</td>
+          <td>{{this.DiscountedPrice}}</td>
+          <td>{{this.Category.CategoryName}}</td>
+          <td>{{this.Description}}</td>
+          <td><img src="/product-images/{{this._id}}.jpg" alt="" width="100"></td>
+          <td>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+              data-bs-target="#exampleModal{{this._id}}">
+              Edit
+            </button>
+            <!--Edit Banner Modal -->
+            <div class="modal fade" id="exampleModal{{this._id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header ">
+                    <h5 class="modal-title " id="exampleModalLabel" style="text-align: center;">Category
+                    </h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/admin/editproduct/{{this._id}}" method="post" enctype="multipart/form-data">
+
+                      <div class="form-group w-60   ">
+                        <label for="exampleInputEmail1">Name</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" name="Name"
+                          value="{{this.Name}}" aria-describedby="emailHelp" placeholder="Product Name">
+                      </div>
+                      <div class="form-group w-60  ">
+                        <label for="exampleInputPassword1">Stock</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="Stock"
+                          value="{{this.Stock}}" placeholder="Stock">
+                      </div>
+
+                      <div class="form-group w-60 ">
+                        <label for="exampleInputPassword1">Price</label>
+                        <input type="number" class="form-control" name="Price" value="{{this.Price}}"
+                          id="exampleInputPassword1" placeholder="Price">
+                      </div>
+
+                      <div class="form-group w-60  ">
+                        <label for="exampleInputPassword1">Discount Price</label>
+                        <input type="number" class="form-control" id="exampleInputPassword1" name="DiscountedPrice"
+                          value="{{this.DiscountedPrice}}" placeholder="DiscountPrice">
+                      </div>
+
+
+                      <div class="form-group">
+                        <label for="exampleInputPassword1">Category</label>
+
+                        <select name="Category" class="form-control">
+                          {{#each ../category}}
+                          <option value="{{this._id}}">{{this.CategoryName}}</option>
+                          {{/each}}
+                        </select>
+                      </div>
+
+                      <div class="form-group w-60  ">
+                        <label for="exampleInputPassword1">Description</label>
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="Description"
+                          value="{{this.Description}}" placeholder="Description">
+                      </div>
+
+                      <div class="form-group w-60  ">
+                        <label for="exampleInputPassword1">Image</label>
+                        <img src="/product-images/{{this._id}}.jpg" alt="" style="width: 100px; height: auto;"
+                          id="imgView">
+                        <input type="file" class="form-control" id="exampleInputPassword1" name="Image" value=""
+                          placeholder="Choose Image" onchange="viewimage(event)">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </td>
+
+          <td>
+            <!--  Delete Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+              Delete
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-body">
+                    <h2>Are You Sure</h2>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button style="border: none;"><a href="/admin/delete-product/{{this._id}}"
+                        class="btn btn-danger">Delete</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<script>
+  $(document).ready(function () {
+    $('#adminProductTable').DataTable();
+  });
+</script>
+
+<script>
+  function viewimage(event) {
+    document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
+  }
+</script>
+
+
+{{!-- <p>Add Products End Here......</p> --}}
+
+
+
+
+
+{{!-- <p>Edit Product Starts Here....</p> --}}
+
+{{!-- <p>modal starts here........</p> --}}
+
+
+
+{{!-- <p>modal ends here........</p> --}}

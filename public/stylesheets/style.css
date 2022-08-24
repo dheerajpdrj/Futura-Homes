@@ -1,0 +1,71 @@
+
+    
+    .login_part_text {
+        background-image: -webkit-linear-gradient(16deg, #2190ff 0%, #ffbc00 64%, #a6598b 100%);
+        background-size: 200% auto;
+    }
+
+    .login_part .login_part_text,
+    .login_part .login_part_form {
+        padding: 80px 70px;
+        height: 600px;
+        display: table;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    
+    :after,
+    :before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    
+    ::after,
+    ::before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    
+    ::after,
+    ::before {
+        box-sizing: border-box;
+    }
+
+    div {
+        display: block;
+    }
+
+    .login_part .login_part_text .btn_3 {
+    border: 1px solid #ffc2d2;
+    background-color: transparent;
+    font-size: 14px;
+    margin-top: 28px;
+}
+
+.btn_3 {
+    display: inline-block;
+    padding: 9px 42px;
+    border-radius: 50px;
+    background-color: #ff3368;
+    border: 1px solid #ecfdff;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 400;
+    box-shadow: -1.717px 8.835px 29.76px 2.24px rgb(255 51 104 / 18%);
+    border: 1px solid #ff3368;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+}

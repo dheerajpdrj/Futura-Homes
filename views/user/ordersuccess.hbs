@@ -1,0 +1,102 @@
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
+
+
+    body {
+     line-height: 3.5;
+    }
+
+    .cart {
+        height: 100vh
+    }
+
+    .progresses {
+        display: flex;
+        align-items: center
+    }
+
+    .line {
+        width: 76px;
+        height: 6px;
+        background: #63d19e
+    }
+
+    .steps {
+        display: flex;
+        background-color: #63d19e;
+        color: #fff;
+        font-size: 12px;
+        width: 30px;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%
+    }
+
+    .check1 {
+        display: flex;
+        background-color: #63d19e;
+        color: #fff;
+        font-size: 17px;
+        width: 60px;
+        height: 60px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-bottom: 10px
+    }
+
+    .invoice-link {
+        font-size: 15px
+    }
+
+    .order-button {
+        height: 50px
+    }
+
+    .background-muted {
+        background-color: #fafafc
+    }
+</style>
+
+<div class="container-fluid " style="margin-top: 40px;">
+    <div class="row d-flex cart align-items-center justify-content-center">
+        <div class=" col-md-10">
+
+            <div class="card">
+                <div class="d-flex justify-content-center border-bottom">
+                    <div class="p-3">
+                        <div class="progresses">
+                            <div class="steps"> <span><i class="fa fa-check"></i></span> </div> <span
+                                class="line"></span>
+                            <div class="steps"> <span><i class="fa fa-check"></i></span> </div> <span
+                                class="line"></span>
+                            <div class="steps"> <span class="font-weight-bold">3</span> </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-0 d-flex justify-content-center">
+                    <div class="col-md-6 border-right p-5 ">
+                        <div class="text-center order-details">
+                            <div class="d-flex justify-content-center mb-5 flex-column align-items-center"> <span
+                                    class="check1"><i class="fa fa-check"></i></span> <span class="font-weight-bold">
+                                    Your Order Placed !</span>
+                                <small class="mt-2">Your order is Confirmed. You will recieve an order confirmation email/SMS shortly with the expected delivery date for your items. </small>
+                                <br>
+                                <button onclick="DownloadInvoice({{order}})" class="link-primary">Download
+                                    Invoice</button>
+                            </div>
+                            <a href="/" class=" btn btn-dark ">Countinue Shoping
+                              </a>
+                            <a href="/orders" class="btn btn-dark ">Go to your
+                                Order</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

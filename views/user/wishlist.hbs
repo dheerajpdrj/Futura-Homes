@@ -17,11 +17,32 @@
                 <tbody>
                     <tr>
                         <td>
-                            <img src="/product-images/{{this._id}}.jpg" alt=""  style=" width: 7rem;height: 100px;" >
+                            <img src="/product-images/{{this._id}}.jpg" alt="" style=" width: 7rem;height: 100px;">
                         </td>
                         <td>{{this.Name}}</td>
                         <td>{{this.Price}}</td>
-                        <td> <a href="/deletewishlist/{{this._id}}"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                        
+                        <td><button style="border: none;" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                    class="fa fa-trash" aria-hidden="true"></i></button>
+
+                            <!--DELETE Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <h2>Are You Sure</h2>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button style="border: none;"><a href="/deletewishlist/{{this._id}}"
+                                                    class="btn btn-danger">Delete</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
                 {{/each}}

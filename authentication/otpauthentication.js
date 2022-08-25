@@ -1,11 +1,11 @@
 const { resolve, reject } = require('promise')
 const { response } = require('../app')
-
+const env= require("dotenv").config();
 
 var config = {
     accountSid: process.env.TWILIO_ACCOUNT_SID,
     authToken: process.env.TWILIO_AUTH_TOKEN,
-    serviceSid: processenv.TWILIO_SERVICE_SID
+    serviceSid: process.env.TWILIO_SERVICE_SID
 }
 
 const client = require('twilio')(config.accountSid, config.authToken)

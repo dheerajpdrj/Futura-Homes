@@ -7,7 +7,7 @@ const adminhelper = require('../helpers/adminhelper');
 const userhelper= require('../helpers/userhelper');
 
 function verify(req,res,next){
-  if(req.session.userLoggedin){
+  if(req.session.user){
     next();
   }else{
     redirect('/login')
@@ -210,7 +210,7 @@ router.get('/edituser',verify,(req,res)=>{
   
 })
 
-router.post('/edituser',(req,res)=>{
+router.post('/edituser',verify,(req,res)=>{
   let profilepic=req.files.profilepic;
   userauthentication.editUser(req.session.user._id, req.body).then((editeduser)=>{
     profilepic.mv('public/profilepic/'+req.session.user._id+'.jpg')
@@ -218,21 +218,40 @@ router.post('/edituser',(req,res)=>{
   })
 })
 
-router.get('/address',(req,res)=>{
+router.get('/address',verify,(req,res)=>{
   userauthentication.getAdress(req.session.user._id).then((address)=>{
     res.render('user/address',{userDisplay:true, address})
   })
  
 })
 
-router.post('/address',(req,res)=>{
+router.post('/address',verify,(req,res)=>{
   userauthentication.addAddress(req.session.user._id,req.body).then((response)=>{
     res.redirect('/address')
   })
 })
 
+router.get('/delete-address/:id',(req,res)=>{
+  let addressId=req.params.id
+  userauthentication.deleteAddress(addressId).then((response)=>{
+    res.redirect('/address')
+  })
+})
 
-router.get('/cart',(req,res)=>{
+router.post('/edit-address/:id',(req,res)=>{
+  let addressid=req.params.id
+  userauthentication.editAddress(addressid,req.body).then((response)=>{
+    res.redirect('/address')
+  })
+})
+
+router.post('/addressCheckout',verify,async(req,res)=>{
+  let addaddress= await userauthentication.addAddress(req.session.user._id,req.body)
+ res.redirect('/checkout');
+})
+
+
+router.get('/cart',verify,(req,res)=>{
  
   let session=req.session.user;
   userhelper.getCartProducts(req.session.user._id).then(async(response)=>{
@@ -247,7 +266,7 @@ router.get('/cart',(req,res)=>{
   
 })
 
-router.post('/addToCart/:id',(req,res)=>{
+router.post('/addToCart/:id',verify,(req,res)=>{
   const id= req.params.id
   userhelper.addToCart(id,req.session.user._id).then((response)=>{
     res.json({response})
@@ -255,7 +274,7 @@ router.post('/addToCart/:id',(req,res)=>{
 })
 
 
-router.get('/cartCount',async(req,res)=>{
+router.get('/cartCount',verify,async(req,res)=>{
   let cartcount = 0
   if(req.session.user){
     cartcount=await userhelper.getCartCount(req.session.user._id)
@@ -265,20 +284,20 @@ router.get('/cartCount',async(req,res)=>{
 
 
 
-router.post('/quantityPlus/:id',  (req, res) => {
+router.post('/quantityPlus/:id',verify,(req, res) => {
   userhelper.quantityPlus(req.params.id, req.session.user._id).then((response) => {
     res.json({ response })
   })
 })
 
-router.post('/quantityMinus/:id',  (req, res) => {
+router.post('/quantityMinus/:id', verify, (req, res) => {
   userhelper.quantityMinus(req.params.id, req.session.user._id).then((response) => {
     res.json({ response })
   })
 })
 
 
-router.get('/delete-cart/:id',(req,res,next)=>{
+router.get('/delete-cart/:id',verify,(req,res,next)=>{
   userhelper.deleteCart(req.params.id , req.session.user._id).then((response)=>{
     res.redirect('/cart');
   }).catch((err)=>{
@@ -286,21 +305,21 @@ router.get('/delete-cart/:id',(req,res,next)=>{
   })
 })
 
-router.get('/wishlist',(req,res)=>{
+router.get('/wishlist',verify,(req,res)=>{
   let session= req.session.user
   userhelper.getWishlistProducts(req.session.user._id).then((wishlist)=>{
     res.render('user/wishlist',{userDisplay:true,wishlist,session})
   })
 })
 
-router.post('/wishlist/:id',(req,res)=>{
+router.post('/wishlist/:id',verify,(req,res)=>{
   console.log(req.params.id);
   userhelper.addWishlist(req.session.user._id,req.params.id).then((response)=>{
     res.json({response}); 
   }) 
 })
 
-router.get('/wishlistcount',(req,res)=>{
+router.get('/wishlistcount',verify,(req,res)=>{
   let wishlistcount=0;
   if(req.session.user){
     userhelper.getWishlistCount(req.session.user._id).then((count)=>{
@@ -310,13 +329,13 @@ router.get('/wishlistcount',(req,res)=>{
   }
 })
 
-router.get('/deletewishlist/:id',(req,res)=>{
+router.get('/deletewishlist/:id',verify,(req,res)=>{
   userhelper.deleteWishlist(req.session.user._id,req.params.id).then((response)=>{
     res.redirect('/wishlist')
   })
 })
 
-router.get('/checkout',(req,res)=>{
+router.get('/checkout',verify,(req,res)=>{
   session=req.session.user
   discount=req.session.discount
   userauthentication.getAdress(req.session.user._id).then(async(address)=>{
@@ -329,7 +348,7 @@ router.get('/checkout',(req,res)=>{
   })
 })
 
-router.post('/applycoupon',(req,res)=>{
+router.post('/applycoupon',verify,(req,res)=>{
   userhelper.applyCoupon(req.body.couponCode,req.session.user._id).then((response)=>{
     if(response.status){
       req.session.coupon=response.coupon
@@ -342,7 +361,7 @@ router.post('/applycoupon',(req,res)=>{
   })
 })
 
-router.post('/placeorder',(req,res)=>{
+router.post('/placeorder',verify,(req,res)=>{
   let orderdetails=req.body
   let userid=req.session.user._id
   if(req.session.coupon){
@@ -377,12 +396,15 @@ router.post('/verifypayment',(req,res)=>{
   })
 })
 
-router.get('/ordersuccess',(req,res)=>{
+router.get('/ordersuccess/:id',(req,res)=>{
+  let orderid=req.params.id
  session= req.session.user
-  res.render('user/ordersuccess',{userDisplay:true,session})
+ userhelper.getOrder(orderid).then((orderdetails)=>{
+   res.render('user/ordersuccess',{userDisplay:true,session,orderdetails})
+ })
 })
 
-router.get('/orders',async(req,res)=>{
+router.get('/orders',verify ,async(req,res)=>{
   let userorders=await userhelper.getUserOrders(req.session.user._id)
   res.render('user/userorders',{userorders})
 })

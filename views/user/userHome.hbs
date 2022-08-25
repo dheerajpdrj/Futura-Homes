@@ -76,7 +76,7 @@
                 {{#each category}}
                 <div class="card product-item border-0 shadow">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <a href="/shopAllProducts" class="cat-img position-relative overflow-hidden mb-3">
+                        <a href="" class="cat-img position-relative overflow-hidden mb-3">
                             <img class="img-fluid w-100" src="product-images/{{this._id}}.jpg" alt=""
                                 style="height: 20rem;">
                         </a>
@@ -103,7 +103,7 @@
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0"
-                    onclick="location.href='/shopDetails/{{this._id}}'">
+                    onclick="location.href='/productdetails/{{this._id}}'">
                     <img class="img-fluid w-100" src="/product-images/{{this._id}}.jpg" alt="image"
                         style="height:20rem ;">
                 </div>
@@ -141,9 +141,10 @@
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
             <div class="card product-item border-0 mb-4">
                 <p class="text-center mt-2" id="{{this._id}}2"></p>
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0"
-                    onclick="location.href='/shopDetails/{{this._id}}'">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <a href="/productdetails/{{this._id}}">
                     <img class="img-fluid w-100" src="/product-images/{{this._id}}.jpg" alt="" style="height:20rem ;">
+                    </a>
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">{{this.Name}}</h6>
@@ -190,7 +191,7 @@
                     <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
                     <div class="d-flex flex-column justify-content-start">
                         <a class="text-dark mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                        <a class="text-dark mb-2" href="/shopAllProducts"><i class="fa fa-angle-right mr-2"></i>Shop</a>
+                        <a class="text-dark mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Shop</a>
                         <a class="text-dark mb-2" href="/cartPage"><i class="fa fa-angle-right mr-2"></i>Cart</a>
                         <a class="text-dark" href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a>
                     </div>
@@ -200,11 +201,11 @@
                     <form action="">
                         <div class="form-group">
                             <input type="text" class="form-control border-0 py-4" placeholder="Your Name"
-                                required="required" />
+                                required="required"/>
                         </div>
                         <div class="form-group">
                             <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                required="required" />
+                                required="required"/>
                         </div>
                         <div>
                             <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>

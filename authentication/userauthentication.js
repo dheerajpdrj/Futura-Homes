@@ -165,6 +165,31 @@ module.exports = {
                 resolve(data)
             
         })
+    },
+
+    deleteAddress:(addressid)=>{
+        return new Promise((resolve,reject)=>{
+            addressmodel.findByIdAndDelete(addressid).then((response)=>{
+                resolve(response);
+            })
+        })
+    },
+
+    editAddress:(addressId,addressdata)=>{
+        return new Promise((resolve,reject)=>{
+            addressmodel.findByIdAndUpdate(addressId,{
+                name:addressdata.name,
+                number:addressdata.number,
+                address1:addressdata.address1,
+                address2:addressdata.address2,
+                district:addressdata.district,
+                state:addressdata.state,
+                country:addressdata.country,
+                pincode:addressdata.pincode
+            }).then((response)=>{
+                resolve(response);
+            })
+        })
     }
 
 

@@ -6,6 +6,7 @@ const couponmodel = require('../model/couponmodel');
 const wishlistmodel = require('../model/wishlistmodel');
 const ordermodel = require('../model/ordermodel');
 const Razorpay = require('razorpay')
+const env= require("dotenv").config();
 const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -334,9 +335,23 @@ Helper = {
     },
     getUserOrders: (userid) => {
         return new Promise((resolve, response) => {
-            ordermodel.find({ userId: userid }).lean().then((orders) => {
+            ordermodel.find({ userId: userid })
+            .lean().then((orders) => {
                 resolve(orders)
             })
+        })
+    },
+
+    getOrder:(orderid)=>{
+        return new Promise((resolve,reject)=>{
+            ordermodel.findOne({_id:orderid})
+            .populate('Orderitems.product')
+            .populate('Deliverydetails')
+            .populate('Orderitems.product.Category')
+            .lean().then((orderdetails)=>{
+                resolve(orderdetails)
+            })
+
         })
     },
 

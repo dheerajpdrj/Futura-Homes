@@ -188,7 +188,7 @@
             }).then((e) => {
                 console.log(e)
                 if (paymentinput === 'COD') {
-                    location.href = '/ordersuccess'
+                    location.href = '/ordersuccess/'+ e.data.order._id
                 } else {
                     razorpayPayment(e.data.response)
                    
@@ -259,4 +259,78 @@
     }
     }
 
+</script>
+
+
+
+<style>
+    .error {
+        color: red;
+        border: 1px solid red;
+    }
+</style>
+
+<script>
+     jQuery.validator.addMethod("lettersonly", function (value, element) {
+        return this.optional(element) || /^[a-z]+$/i.test(value);
+    }, "Letters only please");
+
+    $.validator.addMethod("noCaps", function (value, element) {
+        return this.optional(element) || !/[A-Z]/.test(value);
+    }, "email can't have upper case letters")
+
+    $(document).ready(function () {
+        $("#addressForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 5,
+                    // lettersonly: true
+                },
+                number:{
+                    required: true,
+                    minlength:10,
+                    maxlength:10
+                },
+                address1: {
+                    required: true,
+                },
+                address2: {
+                    required: true,
+                },
+                district: {
+                    required: true,
+                },
+                state: {
+                    required: true,
+                },
+                country: {
+                    required: true,
+                },
+                pinCode: {
+                    required: true,
+                    minlength:6,
+                    maxlength:6
+                },
+
+            },
+            messages: {
+                name: {
+                    required: "Please enter your name",
+                    minlength: "Atleast 5 letters",
+                    // lettersonly: "Only Letters"
+                },
+                number: {
+                    required: "This field is mandatory",
+                    minlength: "Minimum 10 numbers",
+                    maxlength: "Maximum 10 numbers"
+                },
+                pinCode: {
+                    required: "This field is mandatory",
+                    minlength: "Minimum 6 numbers",
+                    maxlength: "Maximum 6 numbers"
+                }
+            }
+        });
+    });
 </script>

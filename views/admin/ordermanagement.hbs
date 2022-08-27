@@ -26,11 +26,11 @@
                     <td>{{this.Paymentdetails}}</td>
                     <td>{{#if this.Orderstatus}}Approved{{else}}Pending{{/if}}</td>
                     <td><button onclick="showUpdate('{{this._id}}')"
-                            style="border:1px solid;">{{this.deliveryStatus}}</button>
-                            
+                            style="background-color: rgb(240, 215, 215); border: none;">{{this.Deliverystatus}}</button>
+
                         <div id="modalDiv{{this._id}}" style="display:none;">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal"
                                 data-bs-target="#m{{this._id}}"><i class="fa fa-edit"></i>Update
                             </button>
 
@@ -40,34 +40,29 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form class="mx-1 mx-md-4" id="shippinform{{this._id}}"
-                                                action="/admin/changeShipping/{{this._id}}" method="post">
+                                            <form class="mx-1 mx-md-4" action="/admin/changeShipping/{{this._id}}"
+                                                method="post">
                                                 <div class="d-flex flex-row align-items-center mb-1">
                                                     <div class="form-outline flex-fill mb-0">
                                                         <label class="form-label" for="form3Exsdsdample1c">
                                                             Change Delivery Status</label>
                                                         <select name="shipping" id="select{{this._id}}">
-                                                            <option value="processing">Processing</option>
-                                                            <option value="shipped">Shipped</option>
+                                                            <option value="Processing">Processing</option>
+                                                            <option value="Shipped">Shipped</option>
                                                             <option value="OutForDelivery">Out For Delivery</option>
                                                             <option value="Delivered">Delivered</option>
                                                         </select>
                                                     </div>
                                                 </div <div class="d-flex justify-content-center mx-4 mb-1 mb-lg-4">
-                                                <button type="submit" class="btn btn-primary btn-lg"
-                                                    form="shippinform{{this._id}}">Edit</button>
+                                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
                                             </form>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        {{!-- <button type="button" class="btn btn-primary">Save changes</button> --}}
                                     </div>
                                 </div>
                             </div>
@@ -77,12 +72,11 @@
                 </tr>
                 {{/each}}
             </tbody>
-
         </table>
     </div>
 </section>
 
-{{!-- <script>
+<script>
 
     $(document).ready(function () {
         $('#userTable').DataTable();
@@ -96,4 +90,4 @@
     }
 
 
-</script> --}} 
+</script>

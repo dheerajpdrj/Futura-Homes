@@ -281,6 +281,16 @@ module.exports = {
             })
 
         })
+    },
+
+    changeShipping:(id,shippingdata)=>{
+        return new Promise((resolve,reject)=>{
+            ordermodel.findByIdAndUpdate(id,{
+                Deliverystatus: shippingdata.shipping
+            }).then((status)=>{
+                resolve(status)
+            })
+        })
     }
 
 }

@@ -18,6 +18,9 @@
                     <tr>
                         <td>
                             <img src="/product-images/{{this._id}}.jpg" alt="" style=" width: 7rem;height: 100px;">
+                         <button class="btn btn-primary px-3" onclick="addToCart('{{this._id}}')"><i
+                            class="fa fa-shopping-cart mr-1"></i> Add To
+                        Cart</button>
                         </td>
                         <td>{{this.Name}}</td>
                         <td>{{this.Price}}</td>
@@ -50,3 +53,21 @@
         </div>
     </div>
 </div>
+
+<script>
+      const addToCart = async (id) => {
+        console.log(id)
+        const res = await axios.post(`/addToCart/${id}`, {
+        }).then((e) => {
+            console.log(e)
+            if (e.data.response.inc) {
+            } else {
+                let count = document.getElementById('cart-count').innerHTML
+                count = parseInt(count) + 1
+                document.getElementById('cart-count').innerHTML = count
+                swal('Item added to the cart', '', 'success')
+
+            }
+        })
+    }
+</script>

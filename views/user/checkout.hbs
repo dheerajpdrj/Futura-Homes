@@ -87,7 +87,8 @@
                                 <label style="width: 100%;">
                                     <div class="card">
                                         <div class="card-body shadow">
-                                            <input type="radio" name="address" value="{{this._id}}" id=""{{#if @first}} checked{{/if}}>
+                                            <input type="radio" name="address" value="{{this._id}}" id="" {{#if @first}}
+                                                checked{{/if}}>
                                             <h5 class="card-title">{{this.name}} <br>{{this.address1}}</h5>
                                             <p class="card-text">{{this.address2}},{{this.district}}
                                                 <br>{{this.state}},
@@ -113,9 +114,9 @@
                     {{#each cartproducts.cart.cartItems}}
                     <div class="d-flex justify-content-between">
                         <p>{{this.product.Name}}</p>
-                            <p>Rs.{{subTotal this.product.Price this.quantity}}</p>
-                        </div>
-                        {{/each}}
+                        <p>Rs.{{subTotal this.product.Price this.quantity}}</p>
+                    </div>
+                    {{/each}}
                     <hr class="mt-0">
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-medium">Subtotal</h6>
@@ -188,10 +189,10 @@
             }).then((e) => {
                 console.log(e)
                 if (paymentinput === 'COD') {
-                    location.href = '/ordersuccess/'+ e.data.order._id
+                    location.href = '/ordersuccess/' + e.data.order._id
                 } else {
                     razorpayPayment(e.data.response)
-                   
+
                 }
             })
         } catch (err) {
@@ -210,7 +211,7 @@
             "image": "https://example.com/your_logo",
             "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             "handler": function (response) {
-                verifyPayment(response,order);
+                verifyPayment(response, order);
                 //alert(response.razorpay_payment_id);
                 //alert(response.razorpay_order_id);
                 //alert(response.razorpay_signature)
@@ -228,35 +229,34 @@
             }
         };
         var rzp1 = new Razorpay(options);
-        rzp1.open();
-
 
         rzp1.on('payment.failed', function (response) {
-            alert(response.error.code);
-            alert(response.error.description);
-            alert(response.error.source);
-            alert(response.error.step);
-            alert(response.error.reason);
-            alert(response.error.metadata.order_id);
-            alert(response.error.metadata.payment_id);
+            paymentFailed(response, data);
         });
+
+        rzp1.open();
     }
 
-  const verifyPayment=async(payment,order)=>{
-    try{
-        const res= await axios.post('/verifypayment',{
-            payment,
-            order
-        }).then((e)=>{
-           if(e.data.status){
-            location.href = '/ordersuccess/' + order.receipt
-           }else{
-            swal('Payment Failed','','error')
-           }
-        })
-    }catch(err){
-        console.log(err)
+    const verifyPayment = async (payment, order) => {
+        try {
+            const res = await axios.post('/verifypayment', {
+                payment,
+                order
+            }).then((e) => {
+                if (e.data.status) {
+                    location.href = '/ordersuccess/' + order.receipt
+                } else {
+                    swal('Payment Failed', '', 'error')
+                }
+            })
+        } catch (err) {
+            console.log(err)
+        }
     }
+
+    const paymentFailed = (response, data) => {
+        log(data,'gerrrrr')
+        swal('paymentFailed', 'You payment failed Try again', 'error')
     }
 
 </script>
@@ -271,7 +271,7 @@
 </style>
 
 <script>
-     jQuery.validator.addMethod("lettersonly", function (value, element) {
+    jQuery.validator.addMethod("lettersonly", function (value, element) {
         return this.optional(element) || /^[a-z]+$/i.test(value);
     }, "Letters only please");
 
@@ -287,10 +287,10 @@
                     minlength: 5,
                     // lettersonly: true
                 },
-                number:{
+                number: {
                     required: true,
-                    minlength:10,
-                    maxlength:10
+                    minlength: 10,
+                    maxlength: 10
                 },
                 address1: {
                     required: true,
@@ -309,8 +309,8 @@
                 },
                 pinCode: {
                     required: true,
-                    minlength:6,
-                    maxlength:6
+                    minlength: 6,
+                    maxlength: 6
                 },
 
             },

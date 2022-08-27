@@ -61,9 +61,6 @@ router.get('/signup', (req, res) => {
 })
 
 
-
-
-
 router.post('/signup', (req, res, next) => {
   req.session.user = req.body;
   userauthentication.userexist(req.body).then((response) => {
@@ -93,6 +90,7 @@ router.post('/check-otp', (req, res) => {
     console.log(response);
     if (response === 'approved') {
       userauthentication.doSignup(req.session.user).then((response) => {
+        req.session.user=response
         req.session.userLoggedin = true
         res.redirect('/')
       })
@@ -384,7 +382,7 @@ router.post('/placeorder',verify,(req,res)=>{
       if(req.session.coupon){
         await userhelper.couponuser(req.session.user._id,req.session.coupon.Couponcode)
       }
-      userhelper.changePaymentStatus(order._id).then(()=>{
+      userhelper.changeOrderStatus(order._id).then(()=>{
         res.json({order})
       })
     }else{
@@ -398,10 +396,15 @@ router.post('/placeorder',verify,(req,res)=>{
 
 router.post('/verifypayment',(req,res)=>{
   userhelper.verifyPayment(req.body).then((response)=>{
-    userhelper.changePaymentStatus(req.body.order.receipt).then(()=>{
+    let status = true
+    userhelper.changeOrderStatus(req.body.order.receipt,status).then(()=>{
       res.json({status:true})
     })
   }).catch((err)=>{
+    let status = false
+    userhelper.changeOrderStatus(req.body.order.receipt,status).then(()=>{
+      res.json({status:false})
+    })
     console.log(err);
     res.json({status:false})
   })

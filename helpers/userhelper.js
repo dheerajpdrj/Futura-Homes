@@ -6,7 +6,7 @@ const couponmodel = require('../model/couponmodel');
 const wishlistmodel = require('../model/wishlistmodel');
 const ordermodel = require('../model/ordermodel');
 const Razorpay = require('razorpay')
-const env= require("dotenv").config();
+const env = require("dotenv").config();
 const instance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -26,9 +26,9 @@ Helper = {
             if (checkCart) {
                 let cartProduct = await cartmodel.findOne({ userId: userid, 'cartItems.product': prodId })
                 if (cartProduct) {
-                    cartmodel.updateOne({ userId: userid, 'cartItems.product': prodId }, { $inc: { 'cartItems.$.quantity': 1 } }).then((data)=>{
+                    cartmodel.updateOne({ userId: userid, 'cartItems.product': prodId }, { $inc: { 'cartItems.$.quantity': 1 } }).then((data) => {
                         response.inc = true
-                    resolve(response)
+                        resolve(response)
                     })
                 } else {
 
@@ -177,7 +177,7 @@ Helper = {
                         }, 0)
                     }
 
-                    
+
                     let shipping = 0;
                     if (total < 1000) {
                         shipping = 100;
@@ -187,7 +187,7 @@ Helper = {
                     response.grandtotal = response.total + response.shipping
                     response.cart = cart
                     resolve(response)
-                }else{
+                } else {
                     response.cartempty = true
                     resolve(response)
                 }
@@ -307,7 +307,7 @@ Helper = {
     },
 
     placeOrder: (userid, orderdata) => {
-        let Orderstatus;
+        let Orderstatus
         return new Promise((resolve, reject) => {
             if (orderdata.paymentinput === 'COD') {
                 Orderstatus = true
@@ -323,13 +323,14 @@ Helper = {
                     Deliverycharge: response.shipping,
                     Deliverydetails: orderdata.addressinput,
                     Paymentdetails: orderdata.paymentinput,
-                    Orderstatus
+                    Deliverystatus : 'Pending',
+                    Orderstatus 
                 })
 
                 newOrder.save().then((data) => {
-                    cartmodel.findOneAndDelete({ userId: userid }).then((response) => {
-                        resolve();
-                    })
+                        cartmodel.findOneAndDelete({ userId: userid }).then((response) => {
+                            resolve();
+                        })
                     resolve(data)
                 })
             })
@@ -338,21 +339,21 @@ Helper = {
     getUserOrders: (userid) => {
         return new Promise((resolve, response) => {
             ordermodel.find({ userId: userid }).populate('Orderitems.product')
-            .lean().then((orders) => {
-                resolve(orders)
-            })
+                .lean().then((orders) => {
+                    resolve(orders)
+                })
         })
     },
 
-    getOrder:(orderid)=>{
-        return new Promise((resolve,reject)=>{
-            ordermodel.findOne({_id:orderid})
-            .populate('Orderitems.product')
-            .populate('Deliverydetails')
-            .populate('Orderitems.product.Category')
-            .lean().then((orderdetails)=>{
-                resolve(orderdetails)
-            })
+    getOrder: (orderid) => {
+        return new Promise((resolve, reject) => {
+            ordermodel.findOne({ _id: orderid })
+                .populate('Orderitems.product')
+                .populate('Deliverydetails')
+                .populate('Orderitems.product.Category')
+                .lean().then((orderdetails) => {
+                    resolve(orderdetails)
+                })
 
         })
     },
@@ -372,25 +373,25 @@ Helper = {
         })
     },
 
-    verifyPayment:(paymentdetails)=>{
-        return new Promise((resolve,reject)=>{
-            const crypto= require('crypto');
+    verifyPayment: (paymentdetails) => {
+        return new Promise((resolve, reject) => {  
+            const crypto = require('crypto');
             let hmac = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
-            let body= paymentdetails.payment.razorpay_order_id  + '|' + paymentdetails.payment.razorpay_payment_id;
+            let body = paymentdetails.payment.razorpay_order_id + '|' + paymentdetails.payment.razorpay_payment_id;
             hmac.update(body.toString());
-            hmac=hmac.digest('hex')
-            if(hmac==paymentdetails.payment.razorpay_signature){
+            hmac = hmac.digest('hex')
+            if (hmac == paymentdetails.payment.razorpay_signature) {
                 resolve();
-            }else{
+            } else {
                 reject();
             }
         })
     },
-    changePaymentStatus:(orderid)=>{
-        return new Promise((resolve,reject)=>{
-            ordermodel.findByIdAndUpdate({_id:orderid},{
-                $set:{Deliverystatus:'Placed'}
-            }).then((status)=>{
+    changeOrderStatus: (orderid, status) => {
+        return new Promise((resolve, reject) => {
+            ordermodel.findByIdAndUpdate({ _id: orderid }, {
+                $set: { Orderstatus: status, Deliverystatus: "Processing" }
+            }).then((status) => {
                 resolve(status);
             })
         })

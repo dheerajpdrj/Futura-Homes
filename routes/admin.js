@@ -263,6 +263,13 @@ router.get('/orders',(req,res)=>{
   })
 })
 
+router.post('/changeShipping/:id',(req,res)=>{
+  let id= req.params.id
+  adminhelper.changeShipping(id,req.body).then((response)=>{
+    res.redirect('/admin/orders')
+  })
+})
+
 router.get('/logout', (req, res) => {
   req.session.destroy()
   res.redirect('/admin')

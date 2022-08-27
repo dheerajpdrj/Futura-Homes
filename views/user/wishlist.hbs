@@ -22,11 +22,11 @@
                         <td>{{this.Name}}</td>
                         <td>{{this.Price}}</td>
                         
-                        <td><button style="border: none;" data-toggle="modal" data-target="#exampleModalCenter"><i
+                        <td><button style="border: none;" data-toggle="modal" data-target="#exampleModalCenter{{this._id}}"><i
                                     class="fa fa-trash" aria-hidden="true"></i></button>
 
                             <!--DELETE Modal -->
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                            <div class="modal fade" id="exampleModalCenter{{this._id}}" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">

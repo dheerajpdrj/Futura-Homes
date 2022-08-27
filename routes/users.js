@@ -5,6 +5,8 @@ let userauthentication = require('../authentication/userauthentication');
 let otpauthentication = require('../authentication/otpauthentication');
 const adminhelper = require('../helpers/adminhelper');
 const userhelper= require('../helpers/userhelper');
+const { route } = require('./admin');
+const session = require('express-session');
 
 function verify(req,res,next){
   if(req.session.user){
@@ -18,15 +20,14 @@ function verify(req,res,next){
 router.get('/', async(req, res) => {
 let cartcount=null;
 if(req.session.user){
-  cartcount=await userhelper.getCartCount(req.session.user._id)
+ cartcount=await userhelper.getCartCount(req.session.user._id)
 }
   adminhelper.getAllProducts().then((allproducts) => {
     adminhelper.getAllBanner().then((allbanner) => {
       adminhelper.getAllCategory().then((category) => {
         let session = req.session.user;
         let loggedIn=req.session.userLoggedin
-        console.log(loggedIn)
-        res.render('user/userHome', { userDisplay: true, session,allproducts, allbanner, category, cartcount,loggedIn })
+        res.render('user/userHome', { userDisplay: true,userfooter:true,session,allproducts, allbanner, category, cartcount,loggedIn })
       })
     })
   })
@@ -175,18 +176,23 @@ router.post('/validate-otp', (req, res) => {
   })
 })
 
-
-
-
-
-
-router.get('/productdetails/:id', (req, res) => {
+router.get('/productdetails/:id',(req, res) => {
   let session = req.session.user;
   adminhelper.getProductDetails(req.params.id).then((product) => {
-      res.render('user/singleProduct', { userDisplay: true, product,session })
+      res.render('user/singleProduct', { userDisplay: true,userfooter:true, product,session})
    
   }).catch((err)=>{
     res.render('error')
+  })
+})
+
+router.get('/allproducts',async(req,res)=>{
+  let category=await adminhelper.getAllCategory()
+  console.log(category,'treeeee');
+  let session= req.session.user
+  let loggedIn=req.session.userLoggedin
+  adminhelper.getAllProducts().then((products)=>{
+    res.render('user/allproducts',{userDisplay:true,userfooter:true,products,category,session,loggedIn})
   })
 })
 
@@ -260,7 +266,7 @@ router.get('/cart',verify,(req,res)=>{
        req.session.coupon = null
        req.session.discount = null
        let totalamount=await userhelper.getTotalAmount(req.session.user._id)
-      res.render('user/cart',{userDisplay:true,session,cart,totalamount ,cartempty});
+      res.render('user/cart',{userDisplay:true,userfooter:true,session,cart,totalamount ,cartempty});
   
   })
   
@@ -281,6 +287,13 @@ router.get('/cartCount',verify,async(req,res)=>{
   }
   res.json({cartcount})
 })
+
+// router.post('/deleteCartcount/:id',(req,res)=>{
+//   let id=req.params.id;
+//   userhelper.deleteCart(id).then((response)=>{
+//     res.json({response})
+//   })
+// })
 
 
 
@@ -308,12 +321,11 @@ router.get('/delete-cart/:id',verify,(req,res,next)=>{
 router.get('/wishlist',verify,(req,res)=>{
   let session= req.session.user
   userhelper.getWishlistProducts(req.session.user._id).then((wishlist)=>{
-    res.render('user/wishlist',{userDisplay:true,wishlist,session})
+    res.render('user/wishlist',{userDisplay:true,userfooter:true,wishlist,session})
   })
 })
 
 router.post('/wishlist/:id',verify,(req,res)=>{
-  console.log(req.params.id);
   userhelper.addWishlist(req.session.user._id,req.params.id).then((response)=>{
     res.json({response}); 
   }) 
@@ -336,7 +348,7 @@ router.get('/deletewishlist/:id',verify,(req,res)=>{
 })
 
 router.get('/checkout',verify,(req,res)=>{
-  session=req.session.user
+  let session=req.session.user
   discount=req.session.discount
   userauthentication.getAdress(req.session.user._id).then(async(address)=>{
     let cartproducts= await userhelper.getCartProducts(req.session.user._id)
@@ -344,7 +356,7 @@ router.get('/checkout',verify,(req,res)=>{
     if(req.session.discount){
       totalamount.grandtotal=totalamount.grandtotal-req.session.discount;
     }
-    res.render('user/checkout',{userDisplay:true,address,totalamount,discount,cartproducts,session})
+    res.render('user/checkout',{userDisplay:true,userfooter:true,address,totalamount,discount,cartproducts,session})
   })
 })
 
@@ -385,7 +397,6 @@ router.post('/placeorder',verify,(req,res)=>{
 })
 
 router.post('/verifypayment',(req,res)=>{
-  console.log(req.body);
   userhelper.verifyPayment(req.body).then((response)=>{
     userhelper.changePaymentStatus(req.body.order.receipt).then(()=>{
       res.json({status:true})
@@ -398,20 +409,26 @@ router.post('/verifypayment',(req,res)=>{
 
 router.get('/ordersuccess/:id',(req,res)=>{
   let orderid=req.params.id
- session= req.session.user
+ let session= req.session.user
  userhelper.getOrder(orderid).then((orderdetails)=>{
-   res.render('user/ordersuccess',{userDisplay:true,session,orderdetails})
+   res.render('user/ordersuccess',{userDisplay:true,userfooter:true,session,orderdetails})
  })
 })
 
-router.get('/orders',verify ,async(req,res)=>{
+router.get('/userorders',verify ,async(req,res)=>{
   let userorders=await userhelper.getUserOrders(req.session.user._id)
-  res.render('user/userorders',{userorders})
+  let session= req.session.user
+  res.render('user/userorders',{userDisplay:true,userfooter:true,userorders,session})
 })
 
-// router.post('/verifypayment',(req,res)=>{
-//   console.log(req.body);
-// })
+
+router.get('/orderdetails/:id',(req,res)=>{
+  let orderid=req.params.id
+ let session=req.session.user
+  userhelper.getOrder(orderid).then((orderdetails)=>{
+    res.render('user/orderdetails',{userDisplay:true,userfooter:true,session,orderdetails})
+  })
+})
 
 router.get('/logout', (req, res) => {
   req.session.destroy();

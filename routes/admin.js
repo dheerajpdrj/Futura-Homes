@@ -8,7 +8,7 @@ const categorymodel = require('../model/categorymodel');
 /* GET home page. */
 router.get('/', function (req, res, next) {
   if (req.session.adminloggedin) {
-    res.render('admin/adminhome', { layout:'adminlayout'})
+    res.render('admin/adminhome', { layout: 'adminlayout' })
   } else {
     res.redirect('/admin/login')
   }
@@ -48,7 +48,7 @@ router.post('/login', (req, res) => {
 router.get("/usermanagement", (req, res) => {
   adminhelper.getAllUser().then((users) => {
     console.log(users);
-    res.render("admin/usermanagement", { users,layout:'adminlayout'})
+    res.render("admin/usermanagement", { users, layout: 'adminlayout' })
   })
 })
 
@@ -60,12 +60,12 @@ router.get('/change-status/:id', (req, res) => {
 
 
 router.get('/products', (req, res) => {
-  
-  
+
+
   adminhelper.getAllProducts().then((allproducts) => {
-    adminhelper.getAllCategory().then((category)=>{
+    adminhelper.getAllCategory().then((category) => {
       console.log(category)
-      res.render('admin/viewProduct', { allproducts,category,layout:'adminlayout'})
+      res.render('admin/viewProduct', { allproducts, category, layout: 'adminlayout' })
     })
   })
 })
@@ -94,21 +94,21 @@ router.get('/delete-product/:id', (req, res) => {
 })
 
 
-router.get('/editproduct/:id', async (req, res) => {
-  adminhelper.getProductDetails(req.params.id).then((product) => {
-    adminhelper.getAllCategory().then((category)=>{
-      res.render('admin/edit-Product', { product,category,layout:'adminlayout' })
-    })
-  })
+// router.get('/editproduct/:id', async (req, res) => {
+//   adminhelper.getProductDetails(req.params.id).then((product) => {
+//     adminhelper.getAllCategory().then((category) => {
+//       res.render('admin/edit-Product', { product, category, layout: 'adminlayout' })
+//     })
+//   })
 
-})
+// })
 
 router.post('/editproduct/:id', (req, res) => {
   let image = req.files.Image
   let id = req.params.id
   console.log(req.body);
   console.log(req.params.i);
-    adminhelper.updateProduct(id,req.body).then((response) => {
+  adminhelper.updateProduct(id, req.body).then((response) => {
     if (req.files.Image) {
       image.mv('public/product-images/' + id + '.jpg')
     }
@@ -118,10 +118,10 @@ router.post('/editproduct/:id', (req, res) => {
 
 router.get('/banner', (req, res) => {
   adminhelper.getAllBanner().then((allbanner) => {
-    adminhelper.getAllProducts().then((product)=>{
-      res.render('admin/banner', { allbanner,product , layout:'adminlayout'})
+    adminhelper.getAllProducts().then((product) => {
+      res.render('admin/banner', { allbanner, product, layout: 'adminlayout' })
     })
-    
+
   })
 
 })
@@ -150,12 +150,12 @@ router.get('/deletebanner/:id', (req, res) => {
   })
 })
 
-router.get('/editbanner/:id', (req, res) => {
-  let id = req.params.id
-  adminhelper.getBannerDetails(id).then((bannerdata) => {
-    res.render('admin/edit-banner', { bannerdata, layout:'adminlayout' })
-  })
-})
+// router.get('/editbanner/:id', (req, res) => {
+//   let id = req.params.id
+//   adminhelper.getBannerDetails(id).then((bannerdata) => {
+//     res.render('admin/edit-banner', { bannerdata, layout: 'adminlayout' })
+//   })
+// })
 
 
 router.post('/editbanner/:id', (req, res) => {
@@ -164,7 +164,7 @@ router.post('/editbanner/:id', (req, res) => {
   adminhelper.updateBanner(id, req.body).then((response) => {
     res.redirect('/admin/banner')
     if (image) {
-      image.mv('public/product-images/' + id + '.jpg') 
+      image.mv('public/product-images/' + id + '.jpg')
     }
 
   })
@@ -175,27 +175,34 @@ router.post('/editbanner/:id', (req, res) => {
 
 // ..................Category.....................
 
-router.get('/category',(req,res)=>{
-  adminhelper.getAllCategory().then((response)=>{
-    res.render('admin/category' ,{admintemplate:true,response, layout:'adminlayout'})
+router.get('/category', (req, res) => {
+  adminhelper.getAllCategory().then((response) => {
+    let categoryerror=req.session.categoryexist
+    req.session.categoryexist=null
+    res.render('admin/category', { categoryerror, response, layout: 'adminlayout' })
   })
-  
+
 })
 
-router.post('/category',(req,res)=>{
+router.post('/category', (req, res) => {
   let image = req.files.CategoryImage;
-  adminhelper.addCategory(req.body).then((response)=>{
-    console.log(response);
-    res.redirect('/admin/category')
-    if (image) {
-      image.mv('public/product-images/' + response._id + '.jpg') 
+  adminhelper.addCategory(req.body).then((response) => {
+    if (response.categoryexist) {
+      req.session.categoryexist=true;
+      res.redirect('/admin/category')
+    } else {
+      console.log(response);
+      res.redirect('/admin/category')
+      if (image) {
+        image.mv('public/product-images/' + response.category._id + '.jpg')
+      }
     }
   })
 })
 
-router.get('/deletecategory/:id',(req,res)=>{
+router.get('/deletecategory/:id', (req, res) => {
   let id = req.params.id
-  adminhelper.deleteCategory(id).then((response)=>{
+  adminhelper.deleteCategory(id).then((response) => {
     res.redirect('/admin/category')
   })
 })
@@ -211,34 +218,48 @@ router.get('/deletecategory/:id',(req,res)=>{
 // })
 
 
-router.post('/editcategory/:id',(req,res)=>{
-  let id= req.params.id;
-  adminhelper.editCategory(id,req.body).then((response)=>{
+router.post('/editcategory/:id', (req, res) => {
+ 
+  let id = req.params.id;
+  let image = req.files.Image;
+  console.log(image);
+  console.log(id);
+  adminhelper.editCategory(id, req.body).then((response) => {
+    if (image) {
+      image.mv('public/product-images/' + response._id + '.jpg')
+    }
     res.redirect('/admin/category')
   })
 })
 
-router.get('/coupon',(req,res)=>{   
-  adminhelper.getallCoupon().then((allcoupons)=>{
-    res.render('admin/coupon',{admintemplate:true,allcoupons, layout:'adminlayout'})
-  })  
+router.get('/coupon', (req, res) => {
+  adminhelper.getallCoupon().then((allcoupons) => {
+    res.render('admin/coupon', { admintemplate: true, allcoupons, layout: 'adminlayout' })
+  })
 })
 
-router.post('/coupon',(req,res)=>{
-  adminhelper.addCoupon(req.body).then((response)=>{
-    res.redirect('/admin/coupon')
-  }) 
-})
-
-router.get('/deletecoupon/:id',(req,res)=>{
-  adminhelper.deleteCoupon(req.params.id).then((response)=>{
+router.post('/coupon', (req, res) => {
+  adminhelper.addCoupon(req.body).then((response) => {
     res.redirect('/admin/coupon')
   })
 })
 
-router.post('/editcoupon/:id',(req,res)=>{
-  adminhelper.editCoupon(req.params.id,req.body).then((coupon)=>{
+router.get('/deletecoupon/:id', (req, res) => {
+  adminhelper.deleteCoupon(req.params.id).then((response) => {
     res.redirect('/admin/coupon')
+  })
+})
+
+router.post('/editcoupon/:id', (req, res) => {
+  adminhelper.editCoupon(req.params.id, req.body).then((coupon) => {
+    res.redirect('/admin/coupon')
+  })
+})
+
+router.get('/orders',(req,res)=>{
+  adminhelper.getAllOrders().then((allorders)=>{
+    console.log(allorders,'geoooooooo');
+    res.render('admin/ordermanagement',{layout:'adminlayout', allorders})
   })
 })
 

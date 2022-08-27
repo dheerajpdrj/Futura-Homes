@@ -73,13 +73,10 @@
   {{/if}}
 
   {{{body}}}
-  {{!-- {{#if userDisplay}}
-  {{>userFooter}}
-  {{else}}
-  {{>adminFooter}}
-  {{/if}} --}}
 
-
+  {{#if userfooter}}
+  {{>userfooter}}
+  {{/if}}
   <!-- Contact Javascript File -->
   <script src="/mail/jqBootstrapValidation.min.js"></script>
   <script src="/mail/contact.js"></script>

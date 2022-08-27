@@ -5,6 +5,7 @@ const userSignup = require('../model/userSignup');
 const bannermodel = require('../model/bannermodel');
 const categorymodel = require('../model/categorymodel');
 const couponmodel = require('../model/couponmodel');
+const ordermodel = require('../model/ordermodel');
 
 module.exports = {
     getAllUser: () => {
@@ -153,19 +154,30 @@ module.exports = {
 
 
     addCategory: (categorydata) => {
-        return new Promise((resolve, reject) => {
-            let { CategoryName } = categorydata;
-            // Categoryname= CategoryName.toUpperCase()
+        let categoryname= categorydata.CategoryName.toUpperCase();
+        return new Promise(async (resolve, reject) => {
+            let categoryexist = await categorymodel.findOne({ CategoryName: categoryname}).lean()
+            let response = {
+                categoryexist: false,
+                category:null
+            }
+            if (categoryexist) {
+                response.categoryexist=true
+                resolve(response)
+            } else {
+                let  CategoryName  = categoryname;
 
-            let newCategory = new categorymodel({
-                CategoryName
-            })
+                let newCategory = new categorymodel({
+                    CategoryName
+                })
 
-            newCategory.save().then((response) => {
-                resolve(response);
-            }).catch((err) => {
-                console.log(err);
-            })
+                newCategory.save().then((categorydata) => {
+                    response.category=categorydata
+                    resolve(response);
+                }).catch((err) => {
+                    console.log(err);
+                })
+            }
         })
     },
 
@@ -235,7 +247,7 @@ module.exports = {
 
     editCoupon: (couponid, coupondata) => {
         return new Promise((resolve, reject) => {
-            let response={}
+            let response = {}
             couponmodel.findById(couponid).lean().then(async (coupon) => {
                 let code1 = await couponmodel.findOne({ Couponcode: coupondata.Couponcode })
                 if (coupon.Couponcode === coupondata.Couponcode || !code1) {
@@ -246,15 +258,28 @@ module.exports = {
                         Coupondescription: coupondata.Coupondescription,
                         Coupondiscount: coupondata.Coupondiscount
                     }).then((data) => {
-                        response.data=true
+                        response.data = true
                         resolve(response)
                     })
-                }else{
-                    response.data=false
+                } else {
+                    response.data = false
                 }
             }).catch((err) => {
                 console.log(err);
             })
+        })
+    },
+
+    getAllOrders:()=>{
+        return new Promise((resolve,reject)=>{
+            ordermodel.find({}).populate('userId')
+            .populate('Orderitems.product')
+            .populate('Deliverydetails')
+            .populate('Orderitems.product.Category').lean()
+            .then((orders)=>{
+                resolve(orders)
+            })
+
         })
     }
 

@@ -37,6 +37,9 @@ helpers:{
   json:(obj)=>{
     return JSON.stringify(obj)
   },
+  date:(d)=>{
+return d.toString().slice(0,16)
+  }
 
 } }))
 

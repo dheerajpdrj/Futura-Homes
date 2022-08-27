@@ -26,8 +26,10 @@ Helper = {
             if (checkCart) {
                 let cartProduct = await cartmodel.findOne({ userId: userid, 'cartItems.product': prodId })
                 if (cartProduct) {
-                    response.duplicate = true
+                    cartmodel.updateOne({ userId: userid, 'cartItems.product': prodId }, { $inc: { 'cartItems.$.quantity': 1 } }).then((data)=>{
+                        response.inc = true
                     resolve(response)
+                    })
                 } else {
 
 
@@ -80,7 +82,6 @@ Helper = {
                 response.cartempty = true
                 resolve(response)
             }
-
         })
     },
 
@@ -94,6 +95,7 @@ Helper = {
             resolve(count)
         })
     },
+
     quantityPlus: (proId, userid) => {
         console.log(proId)
         return new Promise((resolve, reject) => {
@@ -335,7 +337,7 @@ Helper = {
     },
     getUserOrders: (userid) => {
         return new Promise((resolve, response) => {
-            ordermodel.find({ userId: userid })
+            ordermodel.find({ userId: userid }).populate('Orderitems.product')
             .lean().then((orders) => {
                 resolve(orders)
             })

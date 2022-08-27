@@ -87,7 +87,7 @@
                                 <label style="width: 100%;">
                                     <div class="card">
                                         <div class="card-body shadow">
-                                            <input type="radio" name="address" value="{{this._id}}" id="">
+                                            <input type="radio" name="address" value="{{this._id}}" id=""{{#if @first}} checked{{/if}}>
                                             <h5 class="card-title">{{this.name}} <br>{{this.address1}}</h5>
                                             <p class="card-text">{{this.address2}},{{this.district}}
                                                 <br>{{this.state}},
@@ -147,7 +147,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <div>
-                            <input type="radio" name="payment" id="UPI" value="UPI">
+                            <input type="radio" name="payment" id="UPI" value="UPI" checked>
                             <label for="paypal">UPI</label>
                         </div>
                     </div>
@@ -249,7 +249,7 @@
             order
         }).then((e)=>{
            if(e.data.status){
-            location.href = '/ordersuccess'
+            location.href = '/ordersuccess/' + order.receipt
            }else{
             swal('Payment Failed','','error')
            }

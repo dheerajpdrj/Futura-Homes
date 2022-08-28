@@ -1,14 +1,14 @@
 <div class="container card shadow-lg" style="width: 50%; margin-top: px;">
-    <form action="/edituser", method="post" enctype="multipart/form-data">
+    <form action="/edituser" , method="post" enctype="multipart/form-data" id="editProfileForm">
         <div class="form-group">
             <label for="Fullname">First Name</label>
             <input type="text" class="form-control" id="Inputname" aria-describedby="nameHelp" placeholder="Enter Name"
-               value="{{userdata.Fname}}" name="fname">
+                value="{{userdata.Fname}}" name="fname">
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="Fullname">Last Name</label>
-            <input type="text" class="form-control" id="Inputname" aria-describedby="nameHelp" placeholder="Enter Name"
-              value="{{userdata.Lname}}"  name="lname">
+            <input type="text" class="form-control" id="Inputname1" aria-describedby="nameHelp" placeholder="Enter Name"
+                value="{{userdata.Lname}}" name="lname">
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
@@ -22,20 +22,104 @@
                 placeholder="Enter MobileNo" value="{{userdata.Mobile}}" name="mobilenumber">
         </div>
 
-        <div class="form-group">
+        {{!-- <div class="form-group">
             <label for="Mobileno">Alt Number</label>
             <input type="text" class="form-control" id="Inputname" aria-describedby="nameHelp"
                 placeholder="Enter MobileNo" value="{{userdata.AltMobile}}" name="altmobnumber">
-        </div>
+        </div> --}}
 
         <div class="form-group">
             <label for="Mobileno">Choose Image</label>
-            <input type="file" class="form-control" id="Inputname" aria-describedby="nameHelp"
+            <input type="file" class="form-control" id="formFile1" aria-describedby="nameHelp"
                 placeholder="choosepropic" value="" name="profilepic">
+            <img class="col-4" style="width:3rem ;" id="imageView1" src="">
         </div>
-
-
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+
+
+
+
+
+<style>
+    label.error {
+        color: red;
+        border: 1px solid red;
+    }
+</style>
+
+<script>
+    formFile1.onchange = evt => {
+        const [file] = formFile1.files
+        if (file) {
+            imageView1.src = URL.createObjectURL(file)
+        }
+    }
+
+
+    jQuery.validator.addMethod("lettersonly", function (value, element) {
+        return this.optional(element) || /^[a-z]+$/i.test(value);
+    }, "Letters only please");
+
+    $.validator.addMethod("noCaps", function (value, element) {
+        return this.optional(element) || !/[A-Z]/.test(value);
+    }, "email can't have upper case letters")
+
+    $(document).ready(function () {
+        $("#editProfileForm").validate({
+            rules: {
+                fname: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 20,
+                    // lettersonly: true
+                },
+                lname: {
+                    required: true,
+                    minlength: 1,
+                    // lettersonly: true
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    noCaps: true
+                },
+                mobilenumber: {
+                    required: true
+                },
+
+                profilepic:{
+                    required: true
+                }
+
+            },
+
+            messages: {
+                fname: {
+                    required: "Please enter your name",
+                    minlength: "Atleast 5 letters",
+                    maxlength: "Maximum 20 letters"
+                    // lettersonly: "Only Letters"
+                },
+                lname: {
+                    required: "Please enter your last name",
+                    // lettersonly: "Only Letters"
+                },
+                email: {
+                    required: "Please enter your EmailID",
+                    email: "Enter a valid Email ID",
+                    noCaps: "Only lower case"
+                },
+                mobilenumber: {
+                    required: "Please Enter your number"
+                },
+                profilepic:{
+                    required: 'Select a photo'
+                }
+            }
+        });
+    });
+</script>

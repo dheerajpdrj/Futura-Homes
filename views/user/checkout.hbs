@@ -182,19 +182,22 @@
         try {
             let addressinput = $('input[name="address"]:checked').val();
             let paymentinput = $('input[name="payment"]:checked').val();
+            if (addressinput && paymentinput) {
+                const res = await axios.post('/placeorder', {
+                    addressinput: addressinput,
+                    paymentinput: paymentinput
+                }).then((e) => {
+                    console.log(e)
+                    if (paymentinput === 'COD') {
+                        location.href = '/ordersuccess/' + e.data.order._id
+                    } else {
+                        razorpayPayment(e.data.response)
 
-            const res = await axios.post('/placeorder', {
-                addressinput: addressinput,
-                paymentinput: paymentinput
-            }).then((e) => {
-                console.log(e)
-                if (paymentinput === 'COD') {
-                    location.href = '/ordersuccess/' + e.data.order._id
-                } else {
-                    razorpayPayment(e.data.response)
-
-                }
-            })
+                    }
+                })
+            } else {
+                swal('Add an address to continue', '', 'warning')
+            }
         } catch (err) {
             console.log(err)
         }
@@ -255,7 +258,7 @@
     }
 
     const paymentFailed = (response, data) => {
-        log(data,'gerrrrr')
+        log(data, 'gerrrrr')
         swal('paymentFailed', 'You payment failed Try again', 'error')
     }
 

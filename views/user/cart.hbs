@@ -29,7 +29,7 @@
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <div class="input-group-btn">
                                     <button onclick="quantityMinus('{{this.product._id}}')"
-                                        id="minus{{this.product._id}}" class="btn btn-sm btn-primary btn-minus">
+                                        id="minus{{this.product._id}}" class="btn btn-sm btn-primary btn-minus qntvalue">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
@@ -151,6 +151,18 @@
             })
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded',quntityfunction,false)
+    
+    function quntityfunction(){
+        let minusBtns = document.getElementsByClassName('qntvalue')
+        console.log(minusBtns.length)
+        for (let i = 0; i < minusBtns.length; i++) {
+            if (minusBtns[i].value === '1')
+                document.getElementById(`minus${minusBtns[i].id}`).disabled = true
+
         }
     }
 

@@ -20,34 +20,34 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="/admin/products/addproduct" method="post" enctype="multipart/form-data">
+          <form action="/admin/products/addproduct" method="post" enctype="multipart/form-data" id="AddNewProductForm">
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="exampleInputEmail1" name="Name" aria-describedby="emailHelp"
+                <label for="exampleInputName1">Name</label>
+                <input type="text" class="form-control" id="exampleInputName1" name="Name" aria-describedby="emailHelp"
                   placeholder="Product Name">
 
               </div>
               <div class="form-group col-md-6">
-                <label for="exampleInputPassword1">Stock</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" name="Stock" placeholder="Stock">
+                <label for="exampleInputStock1">Stock</label>
+                <input type="text" class="form-control" id="exampleInputStock1" name="Stock" placeholder="Stock">
               </div>
               <div class="form-group col-md-6">
-                <label for="exampleInputPassword1">Price</label>
-                <input type="number" class="form-control" name="Price" id="exampleInputPassword1" placeholder="Price">
+                <label for="exampleInputPrice">Price</label>
+                <input type="number" class="form-control" name="Price" id="exampleInputPrice" placeholder="Price">
               </div>
 
               <div class="form-group col-md-6">
-                <label for="exampleInputPassword1">Discount Price</label>
-                <input type="number" class="form-control" id="exampleInputPassword1" name="DiscountedPrice"
+                <label for="exampleInputDiscount">Discount Price</label>
+                <input type="number" class="form-control" id="exampleInputDiscount" name="DiscountedPrice"
                   placeholder="DiscountPrice">
               </div>
 
 
               <div class="form-group col-md-6">
-                <label for="exampleInputPassword1">Category</label>
+                <label for="exampleInputCategory">Category</label>
 
-                <select name="Category" class="form-control">
+                <select name="Category" class="form-control" id="CategoryId">
                   {{#each category}}
                   <option value="{{this._id}}">{{this.CategoryName}}</option>
                   {{/each}}
@@ -55,14 +55,14 @@
               </div>
 
               <div class="form-group col-md-6">
-                <label for="exampleInputPassword1">Description</label>
-                <input type="text" class="form-control" id="exampleInputPassword1" name="Description"
+                <label for="exampleInputDescription">Description</label>
+                <input type="text" class="form-control" id="exampleInputDescription" name="Description"
                   placeholder="Description">
               </div>
 
               <div class="form-group col-md-12">
-                <label for="exampleInputPassword1">Image</label>
-                <input type="file" class="form-control" id="exampleInputPassword1" name="Image"
+                <label for="exampleInputproductImage">Image</label>
+                <input type="file" class="form-control" id="exampleInputproductImage" name="Image"
                   placeholder="Choose Image">
               </div>
 
@@ -129,36 +129,36 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="/admin/editproduct/{{this._id}}" method="post" enctype="multipart/form-data">
+                    <form action="/admin/editproduct/{{this._id}}" method="post" enctype="multipart/form-data" class="EditProductForm" >
 
                       <div class="form-group w-60   ">
-                        <label for="exampleInputEmail1">Name</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" name="Name"
+                        <label for="exampleInput1">Name</label>
+                        <input type="text" class="form-control" id="exampleInput1" name="Name"
                           value="{{this.Name}}" aria-describedby="emailHelp" placeholder="Product Name">
                       </div>
                       <div class="form-group w-60  ">
-                        <label for="exampleInputPassword1">Stock</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="Stock"
+                        <label for="exampleInput2">Stock</label>
+                        <input type="text" class="form-control" id="exampleInput2" name="Stock"
                           value="{{this.Stock}}" placeholder="Stock">
                       </div>
 
                       <div class="form-group w-60 ">
-                        <label for="exampleInputPassword1">Price</label>
+                        <label for="exampleInput3">Price</label>
                         <input type="number" class="form-control" name="Price" value="{{this.Price}}"
-                          id="exampleInputPassword1" placeholder="Price">
+                          id="exampleInput3" placeholder="Price">
                       </div>
 
                       <div class="form-group w-60  ">
-                        <label for="exampleInputPassword1">Discount Price</label>
-                        <input type="number" class="form-control" id="exampleInputPassword1" name="DiscountedPrice"
+                        <label for="exampleInput4">Discount Price</label>
+                        <input type="number" class="form-control" id="exampleInput4" name="DiscountedPrice"
                           value="{{this.DiscountedPrice}}" placeholder="DiscountPrice">
                       </div>
 
 
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Category</label>
+                        <label for="exampleInput5">Category</label>
 
-                        <select name="Category" class="form-control">
+                        <select name="Category" class="form-control" id="category">
                           {{#each ../category}}
                           <option value="{{this._id}}">{{this.CategoryName}}</option>
                           {{/each}}
@@ -166,16 +166,16 @@
                       </div>
 
                       <div class="form-group w-60  ">
-                        <label for="exampleInputPassword1">Description</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="Description"
+                        <label for="exampleInput6">Description</label>
+                        <input type="text" class="form-control" id="exampleInput7" name="Description"
                           value="{{this.Description}}" placeholder="Description">
                       </div>
 
                       <div class="form-group w-60  ">
-                        <label for="exampleInputPassword1">Image</label>
+                        <label for="exampleInput8">Image</label>
                         <img src="/product-images/{{this._id}}.jpg" alt="" style="width: 100px; height: auto;"
                           id="imageView">
-                        <input type="file" class="form-control" id="exampleInputPassword1" name="Image" value=""
+                        <input type="file" class="form-control" id="exampleInput8" name="Image" value=""
                           placeholder="Choose Image" onchange="viewimage(event)">
                       </div>
                       <button type="submit" class="btn btn-primary">Submit</button>
@@ -233,15 +233,70 @@
 
 
 {{!-- <p>Add Products End Here......</p> --}}
+<style>
+    label.error {
+        color: red;
+        border: 1px solid red;
+    }
+</style>
+
+<script>
+  $(document).ready(function () {
+        $("#AddNewProductForm").validate({
+            rules: {
+                Name: {
+                    required: true,
+                },
+                Stock: {
+                    required: true,
+                },
+                Price: {
+                    required: true,
+                },
+                DiscountedPrice: {
+                    required: true,
+                },
+                Category: {
+                    required: true,
+                },
+                Description: {
+                    required: true,
+                },
+                Image: {
+                    required: true,
+                }
+            }
+        });
+    });
 
 
+    $('.EditProductForm').each(function () {
+        $(this).validate({
+            rules: {
+                Name: {
+                    required: true,
+                },
+                Stock: {
+                    required: true,
+                },
+                Price: {
+                    required: true,
+                },
+                DiscountedPrice: {
+                    required: true,
+                },
+                Category: {
+                    required: true,
+                },
+                Description: {
+                    required: true,
+                },
+                Image: {
+                    required: true,
+                }
+            }
+        });
+    });
+</script>
 
 
-
-{{!-- <p>Edit Product Starts Here....</p> --}}
-
-{{!-- <p>modal starts here........</p> --}}
-
-
-
-{{!-- <p>modal ends here........</p> --}}

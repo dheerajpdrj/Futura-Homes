@@ -15,7 +15,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/addbanner" method="post" enctype="multipart/form-data">
+                    <form action="/admin/addbanner" method="post" enctype="multipart/form-data" id="bannervalidation">
                         <label class="form-label" for="form3Example1c"> Select Product</label>
                         <select name="Product" class="form-control" id="product">
                             {{#each product}}
@@ -32,8 +32,8 @@
                             <input type="text" class="form-control" id="exampleInputDescription" name="Description">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputDescription">Image</label>
-                            <input type="file" class="form-control" id="exampleInputDescription" name="Image">
+                            <label for="exampleInputimage">Image</label>
+                            <input type="file" class="form-control" id="exampleInputimage" name="Image">
                         </div>
 
 
@@ -93,7 +93,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <form action="/admin/editbanner/{{this._id}}" method="post"
-                                        enctype="multipart/form-data">
+                                        enctype="multipart/form-data" class="editBannerForm">
                                         <div class="form-group">
                                             <label for="exampleInputBanner">Banner Heading</label>
                                             <input type="text" class="form-control" id="exampleInputBanner"
@@ -108,8 +108,8 @@
                                             <label for="exampleInputDescription">Image</label>
                                             <img src="/product-images/{{this._id}}.jpg"
                                                 style="width: 100px; height: auto;" alt="" id="imageView">
-                                            <input type="file" class="form-control" id="exampleInputDescription"
-                                                name="Image" onchange="viewimage(event)">
+                                            <input type="file" class="form-control" id="bannerImage"
+                                                name="BannerImage" onchange="viewimage(event)">
                                         </div>
 
                                         <div class="modal-footer">
@@ -172,4 +172,49 @@
 </script>
 
 
+<style>
+    label.error {
+        color: red;
+        border: 1px solid red;
+    }
+</style>
+
+<script>
+    $(".editBannerForm").each(function () {
+        $(this).validate({
+            rules: {
+                Heading: {
+                    required: true,
+                },
+                Description: {
+                    required: true,
+                    minlength:4,
+                },
+                BannerImage: {
+                    required: true,
+                },
+            }
+        });
+    })
+
+     $(document).ready(function () {
+        $("#bannervalidation").validate({
+             rules: {
+                Heading: {
+                    required: true,
+                },
+                Description: {
+                    required: true,
+                    minlength:4,
+                },
+                Image: {
+                    required: true,
+                },
+            }
+        });
+    })
+</script>
+
 {{!-- <p>Banner view Part</p> --}}
+
+

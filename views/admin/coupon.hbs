@@ -12,7 +12,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/coupon" method="post">
+                    <form action="/admin/coupon" method="post" id="addcoupon">
                         <div class="form-group">
                             <label for="formGroupExampleInput">Coupon Name</label>
                             <input type="text" class="form-control" id="formGroupExampleInput" name="Couponname"
@@ -24,18 +24,18 @@
                                 placeholder="Code">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Description</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput2" name="Coupondescription"
+                            <label for="formGroupExampleInput3">Description</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput3" name="Coupondescription"
                                 placeholder="Description">
                         </div>
                         <div class="form-group">
-                            <label for="formGroupExampleInput2">Discount</label>
-                            <input type="text" class="form-control" id="formGroupExampleInput2" name="Coupondiscount"
+                            <label for="formGroupExampleInput4">Discount</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput4" name="Coupondiscount"
                                 placeholder="Discount">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                     </form>
                 </div>
@@ -83,11 +83,10 @@
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">EDIT</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="/admin/editcoupon/{{this._id}}" method="post">
+                                        <form action="/admin/editcoupon/{{this._id}}" method="post" class="editcouponForm">
                                             <div class="form-group">
                                                 <label for="formGroupExampleInput">Coupon Name</label>
                                                 <input type="text" class="form-control" id="formGroupExampleInput"
@@ -101,13 +100,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="formGroupExampleInput2">Description</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput2"
+                                                <input type="text" class="form-control" id="formGroupExampleInput3"
                                                     name="Coupondescription" placeholder="Description"
                                                     value="{{this.Coupondescription}}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="formGroupExampleInput2">Discount</label>
-                                                <input type="text" class="form-control" id="formGroupExampleInput2"
+                                                <input type="text" class="form-control" id="formGroupExampleInput4"
                                                     name="Coupondiscount" placeholder="Discount"
                                                     value="{{this.Coupondiscount}}">
                                             </div>
@@ -161,4 +160,53 @@
     $(document).ready(function () {
         $('#couponid').DataTable();
     });
+</script>
+
+<style>
+    label.error {
+        color: red;
+        border: 1px solid red;
+    }
+</style>
+
+<script>
+    $(".editcouponForm").each(function () {
+        $(this).validate({
+            rules: {
+                Couponname: {
+                    required: true,
+                },
+                Couponcode: {
+                    required: true,
+                    minlength:4,
+                },
+                Coupondescription: {
+                    required: true,
+                },
+                Coupondiscount: {
+                    required: true,
+                },
+            }
+        });
+    })
+
+     $(document).ready(function () {
+        $("#addcoupon").validate({
+            rules: {
+                Couponname: {
+                    required: true,
+                },
+                Couponcode: {
+                    required: true,
+                    minlength:4,
+                },
+                Coupondescription: {
+                    required: true,
+                },
+                Coupondiscount: {
+                    required: true,
+                },
+            }
+        });
+    })
 </script>

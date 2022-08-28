@@ -95,6 +95,7 @@
                 <h6 class="text-muted ml-2"><del>Rs.{{product.Price}}</del></h6>
                 <p class="mb-4">{{product.Description}}</p>
                 <h5>{{product.Category.CategoryName}}</h5>
+                <input type="text" id="productid" value="{{product._id}}" style="display: none;">
                 <p class="mb-4"></p>
                 <div class="d-flex align-items-center mb-4 pt-2">
                     {{#if session}}
@@ -215,6 +216,21 @@
 
             paneContainer: pane,
             inlinePane: false
+        })
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', myWishlist, false)
+    function myWishlist(evt) {
+        let productId = document.getElementById('productid').value
+        axios.get(`/checkWishlist/${productId}`, {}).then((e) => {
+            console.log(e.data)
+            if (e.data.wishlist) {
+                document.getElementById("wishicon" + productId).style.color = '#ff052b'
+            } else {
+                document.getElementById('wishicon' + productId).style.color = '#b3abac'
+            }
         })
     }
 </script>

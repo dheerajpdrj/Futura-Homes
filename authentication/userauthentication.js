@@ -77,7 +77,7 @@ module.exports = {
 
             let response = {}
             console.log(Email);
-            let user = await usermodel.findOne({ Email })
+            let user = await usermodel.find({Email:Email , Mobile:Mobile })
             console.log(user);
 
             if (user) {
@@ -171,7 +171,9 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             addressmodel.findByIdAndDelete(addressid).then((response)=>{
                 resolve(response);
-            })
+            }).catch((err)=>{
+                reject(err)
+              })
         })
     },
 
@@ -188,6 +190,8 @@ module.exports = {
                 pincode:addressdata.pincode
             }).then((response)=>{
                 resolve(response);
+            }).catch((err)=>{
+                reject(err)
             })
         })
     }

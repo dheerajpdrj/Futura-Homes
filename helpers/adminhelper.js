@@ -10,21 +10,29 @@ const ordermodel = require('../model/ordermodel');
 module.exports = {
     getAllUser: () => {
         return new Promise(async (resolve, reject) => {
-            let users = await userSignup.find().lean()
-            resolve(users)
+            try {
+                let users = await userSignup.find().lean()
+                resolve(users)
+            } catch (err) {
+                reject(err)
+            }
         })
     },
     editUser: (id) => {
         return new Promise(async (resolve, reject) => {
-            let user = await userSignup.findById(id).lean()
-            if (user.status) {
-                userSignup.findByIdAndUpdate(id, { status: false }).then((data) => {
-                    resolve(data)
-                })
-            } else {
-                userSignup.findByIdAndUpdate(id, { status: true }).then((data) => {
-                    resolve(data)
-                })
+            try {
+                let user = await userSignup.findById(id).lean()
+                if (user.status) {
+                    userSignup.findByIdAndUpdate(id, { status: false }).then((data) => {
+                        resolve(data)
+                    })
+                } else {
+                    userSignup.findByIdAndUpdate(id, { status: true }).then((data) => {
+                        resolve(data)
+                    })
+                }
+            } catch (err) {
+                reject(err)
             }
         })
     },
@@ -32,24 +40,28 @@ module.exports = {
 
     addProduct: (productdata) => {
         return new Promise((resolve, reject) => {
-            let { Name, Stock, Price, DiscountedPrice, Category, Description } = productdata;
+            try {
+                let { Name, Stock, Price, DiscountedPrice, Category, Description } = productdata;
 
-            let newProduct = new addproductmodel({
-                Name,
-                Stock,
-                Price,
-                DiscountedPrice,
-                Category,
-                Description
+                let newProduct = new addproductmodel({
+                    Name,
+                    Stock,
+                    Price,
+                    DiscountedPrice,
+                    Category,
+                    Description
 
-            })
+                })
 
-            newProduct.save().then((data) => {
+                newProduct.save().then((data) => {
 
-                resolve(data);
-            }).catch((err) => {
-                console.log(err);
-            })
+                    resolve(data);
+                }).catch((err) => {
+                    console.log(err);
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
@@ -57,163 +69,219 @@ module.exports = {
 
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
-            let products = await addproductmodel.find().populate('Category').lean();
-            resolve(products)
+            try {
+                let products = await addproductmodel.find().populate('Category').lean();
+                resolve(products)
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
 
     deleteProduct: (prodId) => {
         return new Promise((resolve, reject) => {
-            addproductmodel.findByIdAndDelete(prodId).then((response) => {
-                resolve(response);
-            })
+            try {
+                addproductmodel.findByIdAndDelete(prodId).then((response) => {
+                    resolve(response);
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
     getProductDetails: (prodId) => {
         return new Promise((resolve, reject) => {
-            addproductmodel.findById(prodId).populate('Category').lean().then((response) => {
-                if (response) {
-                    console.log(response, 'dsssss');
-                    resolve(response);
-                } else (reject('Product not found'))
+            try {
+                addproductmodel.findById(prodId).populate('Category').lean().then((response) => {
+                    if (response) {
+                        resolve(response);
+                    } else (reject('Product not found'))
 
-            }).catch(() => {
-                reject('product not found')
-            })
+                }).catch((err) => {
+                    reject(err)
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
     updateProduct: (prodId, productdata) => {
         return new Promise((resolve, reject) => {
-            addproductmodel.findByIdAndUpdate(prodId, {
-                Name: productdata.Name,
-                Stock: productdata.Stock,
-                Price: productdata.Price,
-                DiscountedPrice: productdata.DiscountedPrice,
-                Category: productdata.Category
-            }).then((response) => {
+            try {
+                addproductmodel.findByIdAndUpdate(prodId, {
+                    Name: productdata.Name,
+                    Stock: productdata.Stock,
+                    Price: productdata.Price,
+                    DiscountedPrice: productdata.DiscountedPrice,
+                    Category: productdata.Category
+                }).then((response) => {
 
-                resolve(response);
+                    resolve(response);
 
-            })
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
 
     addBanner: (bannerdata) => {
         return new Promise((resolve, reject) => {
-            let { Product, Heading, Description } = bannerdata
+            try {
+                let { Product, Heading, Description } = bannerdata
 
-            let newBanner = new bannermodel({
-                Product,
-                Heading,
-                Description
-            })
+                let newBanner = new bannermodel({
+                    Product,
+                    Heading,
+                    Description
+                })
 
-            newBanner.save().then((data) => {
-                resolve(data)
-            })
+                newBanner.save().then((data) => {
+                    resolve(data)
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
     getAllBanner: () => {
         return new Promise(async (resolve, reject) => {
-            let allbanner = await bannermodel.find().lean()
-            resolve(allbanner)
+            try {
+                let allbanner = await bannermodel.find().lean()
+                resolve(allbanner)
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
     deleteBanner: (prodId) => {
         return new Promise((resolve, reject) => {
-            bannermodel.findByIdAndDelete(prodId).then((response) => {
-                resolve(response);
-            })
+            try {
+                bannermodel.findByIdAndDelete(prodId).then((response) => {
+                    resolve(response);
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
     getBannerDetails: (prodId) => {
         return new Promise((resolve, reject) => {
-            bannermodel.findById(prodId).lean().then((response) => {
-                resolve(response)
-            })
+            try {
+                bannermodel.findById(prodId).lean().then((response) => {
+                    resolve(response)
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
     updateBanner: (prodId, bannerdata) => {
         return new Promise((resolve, reject) => {
-            bannermodel.findByIdAndUpdate(prodId, {
-                Heading: bannerdata.Heading,
-                Description: bannerdata.Description
-            }).then((data) => {
-                resolve(data)
-            })
+            try {
+                bannermodel.findByIdAndUpdate(prodId, {
+                    Heading: bannerdata.Heading,
+                    Description: bannerdata.Description
+                }).then((data) => {
+                    resolve(data)
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     },
 
 
     addCategory: (categorydata) => {
-        let categoryname= categorydata.CategoryName.toUpperCase();
+        let categoryname = categorydata.CategoryName.toUpperCase();
         return new Promise(async (resolve, reject) => {
-            let categoryexist = await categorymodel.findOne({ CategoryName: categoryname}).lean()
+            try{
+            let categoryexist = await categorymodel.findOne({ CategoryName: categoryname }).lean()
             let response = {
                 categoryexist: false,
-                category:null
+                category: null
             }
             if (categoryexist) {
-                response.categoryexist=true
+                response.categoryexist = true
                 resolve(response)
             } else {
-                let  CategoryName  = categoryname;
+                let CategoryName = categoryname;
 
                 let newCategory = new categorymodel({
                     CategoryName
                 })
 
                 newCategory.save().then((categorydata) => {
-                    response.category=categorydata
+                    response.category = categorydata
                     resolve(response);
                 }).catch((err) => {
                     console.log(err);
                 })
             }
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     getAllCategory: () => {
         return new Promise(async (resolve, reject) => {
+            try{
             let category = await categorymodel.find().lean()
             resolve(category)
+            }catch(err){
+                reject(err)
+            }
         })
     },
 
     deleteCategory: (catId) => {
         return new Promise((resolve, reject) => {
+            try{
             categorymodel.findByIdAndDelete(catId).then((response) => {
                 resolve(response);
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     getCategorydetails: (catId) => {
         return new Promise((resolve, reject) => {
+            try{
             categorymodel.findById(catId).lean().then((data) => {
                 resolve(data)
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     editCategory: (catId, catdata) => {
         return new Promise((resolve, reject) => {
+            try{
             categorymodel.findByIdAndUpdate(catId, { CategoryName: catdata.CategoryName }).then((response) => {
                 resolve(response);
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     addCoupon: (coupondata) => {
         return new Promise((resolve, reject) => {
+            try{
             let { Couponname, Couponcode, Coupondescription, Coupondiscount } = coupondata;
 
             let newCoupon = new couponmodel({
@@ -226,27 +294,39 @@ module.exports = {
             newCoupon.save().then((response) => {
                 resolve(response)
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     getallCoupon: (coupondata) => {
         return new Promise((resolve, reject) => {
+            try{
             couponmodel.find().lean().then((response) => {
                 resolve(response)
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     deleteCoupon: (couponid) => {
         return new Promise((resolve, reject) => {
+            try{
             couponmodel.findByIdAndDelete(couponid).then((response) => {
                 resolve(response)
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
     editCoupon: (couponid, coupondata) => {
         return new Promise((resolve, reject) => {
+            try{
             let response = {}
             couponmodel.findById(couponid).lean().then(async (coupon) => {
                 let code1 = await couponmodel.findOne({ Couponcode: coupondata.Couponcode })
@@ -267,29 +347,39 @@ module.exports = {
             }).catch((err) => {
                 console.log(err);
             })
+        }catch(err){
+            reject(err)
+        }
         })
     },
 
-    getAllOrders:()=>{
-        return new Promise((resolve,reject)=>{
+    getAllOrders: () => {
+        return new Promise((resolve, reject) => {
+            try{
             ordermodel.find({}).populate('userId')
-            .populate('Orderitems.product')
-            .populate('Deliverydetails')
-            .populate('Orderitems.product.Category').lean()
-            .then((orders)=>{
-                resolve(orders)
-            })
-
+                .populate('Orderitems.product')
+                .populate('Deliverydetails')
+                .populate('Orderitems.product.Category').lean()
+                .then((orders) => {
+                    resolve(orders)
+                })
+            }catch(err){
+                reject(err)
+            }
         })
     },
 
-    changeShipping:(id,shippingdata)=>{
-        return new Promise((resolve,reject)=>{
-            ordermodel.findByIdAndUpdate(id,{
+    changeShipping: (id, shippingdata) => {
+        return new Promise((resolve, reject) => {
+            try{
+            ordermodel.findByIdAndUpdate(id, {
                 Deliverystatus: shippingdata.shipping
-            }).then((status)=>{
+            }).then((status) => {
                 resolve(status)
             })
+        }catch(err){
+            reject(err)
+        }
         })
     }
 

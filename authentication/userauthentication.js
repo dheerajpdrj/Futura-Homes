@@ -77,7 +77,7 @@ module.exports = {
 
             let response = {}
             console.log(Email);
-            let user = await usermodel.find({Email:Email , Mobile:Mobile })
+            let user = await usermodel.find({Email:Email})
             console.log(user);
 
             if (user) {

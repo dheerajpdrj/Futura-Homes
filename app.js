@@ -9,6 +9,8 @@ const session = require('express-session')
 const MongodbSession = require('connect-mongodb-session')(session)
 const fileupload = require('express-fileupload')
 
+const env = require('dotenv').config()
+
 let adminRouter = require('./routes/admin');
 let usersRouter = require('./routes/users');
 const { quantityMinus } = require('./helpers/userhelper');
@@ -46,7 +48,7 @@ return d.toString().slice(0,16)
 
 //mongoose connecting
 
-const mongoURI = "mongodb://localhost:27017/futura";
+const mongoURI = `mongodb+srv://dheerajpdrj:${process.env.DATABASE_PASS}@cluster0.efns93r.mongodb.net/futura`;
 mongoose.connect(mongoURI).then((res) => {
   console.log("mongodb connected")
 })

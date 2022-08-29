@@ -97,9 +97,13 @@ router.post('/signup', (req, res, next) => {
 
 router.get('/otppage', (req, res, next) => {
   try {
-    let userdetails = req.session.user
-    let error = req.session.otperror
-    res.render('user/otppage', { userdetails, error })
+    if(req.session.userLoggedin){
+      res.redirect('/')
+    }else{
+      let userdetails = req.session.user
+      let error = req.session.otperror
+      res.render('user/otppage', { userdetails, error })
+    }
   } catch (err) {
     next(err)
   }
@@ -117,7 +121,6 @@ router.post('/check-otp', (req, res, next) => {
         })
       } else {
         req.session.otperror = 'Invalid otp'
-
         res.redirect('/otppage')
       }
     })
@@ -180,9 +183,15 @@ router.post('/loginwithotp', (req, res, next) => {
 
 router.get('/loginwithotp', (req, res, next) => {
   try {
-    let userdetails = req.session.user
-    let error = req.session.otperror
-    res.render('user/loginotppage', { userdetails, error })
+    if(req.session.userLoggedin){
+      res.redirect('/')
+    }
+    else{
+      let userdetails = req.session.user
+      let error = req.session.otperror
+      res.render('user/loginotppage', { userdetails, error })
+      
+    }
   } catch (err) {
     next(err)
   }
@@ -195,7 +204,7 @@ router.post('/validate-otp', (req, res, next) => {
     otpauthentication.checkotp(req.body.otp, req.body.number).then((response) => {
 
       if (response === 'approved') {
-
+        req.session.userLoggedin=true
         console.log('Login success');
         res.redirect('/')
       } else {

@@ -64,9 +64,9 @@ router.get('/signup', (req, res, next) => {
     if (req.session.userLoggedin) {
       res.redirect('/')
     } else {
-      let session = req.session.userexist
+      let userexist = req.session.userexist
       req.session.userexist = null
-      res.render('user/userSignup', { session })
+      res.render('user/userSignup', { userexist })
     }
   } catch (err) {
     next(err)

@@ -73,11 +73,12 @@ module.exports = {
     userexist: (userdata) => {
 
         return new Promise(async (resolve, reject) => {
+            try{
             let { Fname, Lname, Email, Mobile, Password } = userdata
 
             let response = {}
             console.log(Email);
-            let user = await usermodel.find({Email:Email})
+            let user = await usermodel.findOne({Email:Email})
             console.log(user);
 
             if (user) {
@@ -90,6 +91,9 @@ module.exports = {
                 resolve(response)
 
             }
+        }catch(err){
+            reject(err)
+        }
         })
 
 

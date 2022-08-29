@@ -24,7 +24,7 @@
                         <h3>Please Sign UP now</h3>
                         <form class="row contact_form" action="/signup" method="post" novalidate="novalidate"
                             id="myform">
-                            {{#if session}}
+                            {{#if userexist}}
                             <div class="text-danger">
                                 User already exist
                             </div>

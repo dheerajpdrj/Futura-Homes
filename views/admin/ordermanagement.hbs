@@ -4,6 +4,7 @@
         <table class="table mt-5 border border-dark" id="userTable">
             <thead>
                 <tr>
+                    <th scope="col">No</th>
                     <th scope="col">CUSTOMER</th>
                     <th scope="col">PRODUCTS</th>
                     <th scope="col">QUANTITY</th>
@@ -18,8 +19,8 @@
             <tbody>
                 {{#each allorders}}
                 <tr>
+                    <td>{{inc1 @index}}</td>
                     <td>{{this.userId.Fname}}</td>
-
                     <td>{{#each this.Orderitems}}{{this.product.Name}} <br>{{/each}}</td>
                     <td>{{#each this.Orderitems}}{{this.quantity}}<br>{{/each}}</td>
                     <td>{{this.Totalprice}}</td>
@@ -30,7 +31,7 @@
 
                         <div id="modalDiv{{this._id}}" style="display:none;">
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
                                 data-bs-target="#m{{this._id}}"><i class="fa fa-edit"></i>Update
                             </button>
 

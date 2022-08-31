@@ -360,6 +360,7 @@ module.exports = {
                 .populate('Orderitems.product')
                 .populate('Deliverydetails')
                 .populate('Orderitems.product.Category').lean()
+                .sort({createdAt:-1})
                 .then((orders) => {
                     resolve(orders)
                 })

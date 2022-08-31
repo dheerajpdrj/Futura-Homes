@@ -97,9 +97,9 @@ router.post('/signup', (req, res, next) => {
 
 router.get('/otppage', (req, res, next) => {
   try {
-    if(req.session.userLoggedin){
+    if (req.session.userLoggedin) {
       res.redirect('/')
-    }else{
+    } else {
       let userdetails = req.session.user
       let error = req.session.otperror
       res.render('user/otppage', { userdetails, error })
@@ -183,14 +183,14 @@ router.post('/loginwithotp', (req, res, next) => {
 
 router.get('/loginwithotp', (req, res, next) => {
   try {
-    if(req.session.userLoggedin){
+    if (req.session.userLoggedin) {
       res.redirect('/')
     }
-    else{
+    else {
       let userdetails = req.session.user
       let error = req.session.otperror
       res.render('user/loginotppage', { userdetails, error })
-      
+
     }
   } catch (err) {
     next(err)
@@ -204,7 +204,7 @@ router.post('/validate-otp', (req, res, next) => {
     otpauthentication.checkotp(req.body.otp, req.body.number).then((response) => {
 
       if (response === 'approved') {
-        req.session.userLoggedin=true
+        req.session.userLoggedin = true
         console.log('Login success');
         res.redirect('/')
       } else {
@@ -280,9 +280,9 @@ router.post('/edituser', verify, (req, res, next) => {
 
 router.get('/address', verify, (req, res, next) => {
   try {
-    let session=req.session.user
+    let session = req.session.user
     userauthentication.getAdress(req.session.user._id).then((address) => {
-      res.render('user/address', { userDisplay: true, address,session })
+      res.render('user/address', { userDisplay: true, address, session })
     })
   } catch (err) {
     next(err)
@@ -337,13 +337,12 @@ router.get('/cart', verify, (req, res, next) => {
       req.session.coupon = null
       req.session.discount = null
       let totalamount = await userhelper.getTotalAmount(req.session.user._id)
-      res.render('user/cart', { userDisplay: true, userfooter: true, session, cart, totalamount, cartempty });
-
+      let allcoupons = await adminhelper.getallCoupon()
+      res.render('user/cart', { userDisplay: true, userfooter: true, session, cart, totalamount, cartempty, allcoupons });
     })
   } catch (err) {
     next(err)
   }
-
 })
 
 router.post('/addToCart/:id', verify, (req, res, next) => {
@@ -516,7 +515,7 @@ router.post('/verifypayment', verify, (req, res, next) => {
   try {
     userhelper.verifyPayment(req.body).then((response) => {
       let status = true
-      userhelper.changeOrderStatus(req.body.order.receipt, status,req.session.user._id).then(() => {
+      userhelper.changeOrderStatus(req.body.order.receipt, status, req.session.user._id).then(() => {
         res.json({ status: true })
       })
     }).catch((err) => {
@@ -533,25 +532,25 @@ router.post('/verifypayment', verify, (req, res, next) => {
 })
 
 router.get('/ordersuccess/:id', verify, (req, res, next) => {
-  try{
+  try {
     let orderid = req.params.id
     let session = req.session.user
     userhelper.getOrder(orderid).then((orderdetails) => {
       res.render('user/ordersuccess', { userDisplay: true, userfooter: true, session, orderdetails })
-    }).catch((err)=>{
+    }).catch((err) => {
       next(err)
     })
-  }catch(err){
+  } catch (err) {
     next(err)
   }
 })
 
-router.get('/userorders', verify, async (req, res,next) => {
-  try{
-  let userorders = await userhelper.getUserOrders(req.session.user._id)
-  let session = req.session.user
-  res.render('user/userorders', { userDisplay: true, userfooter: true, userorders, session })
-  }catch(err){
+router.get('/userorders', verify, async (req, res, next) => {
+  try {
+    let userorders = await userhelper.getUserOrders(req.session.user._id)
+    let session = req.session.user
+    res.render('user/userorders', { userDisplay: true, userfooter: true, userorders, session })
+  } catch (err) {
     next(err)
   }
 })
@@ -560,10 +559,16 @@ router.get('/userorders', verify, async (req, res,next) => {
 router.get('/orderdetails/:id', verify, (req, res, next) => {
   let orderid = req.params.id
   let session = req.session.user
-  userhelper.getOrder(orderid).then((orderdetails) => {
-    res.render('user/orderdetails', { userDisplay: true, userfooter: true, session, orderdetails })
+  userhelper.getOrder(orderid).then(async(orderdetails) => {
+    res.render('user/orderdetails', { userDisplay: true, userfooter: true, session, orderdetails})
   }).catch((err) => {
     next(err)
+  })
+})
+
+router.get('/cancelOrder/:id',(req,res)=>{
+  userhelper.cancelOrder(req.params.id).then((response)=>{
+    res.redirect('/orderdetails/'+req.params.id)
   })
 })
 
@@ -572,8 +577,8 @@ router.get('/logout', (req, res) => {
   res.redirect('/')
 })
 
-router.get('/error',(req,res)=>{
-  res.render('error',{layout:false})
+router.get('/error', (req, res) => {
+  res.render('error', { layout: false })
 })
 
 module.exports = router;

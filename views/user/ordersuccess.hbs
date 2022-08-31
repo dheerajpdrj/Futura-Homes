@@ -36,11 +36,10 @@
                                             <h6 class="mb-0"> {{product.Name}}</h6>
                                         </div>
                                         <div class="col-auto my-auto"> <small>Brand: {{product.Name}}</small></div>
-                                        {{!-- <div class="col my-auto"> <small>Size :
-                                                {{product.Category.CategoryName}}</small></div> --}}
+                                       <div class="col my-auto"> <small>{{product.DiscountedPrice}} x</small></div>
                                         <div class="col my-auto"> <small>Qty : {{quantity}}</small></div>
                                         <div class="col my-auto">
-                                            <h6 class="mb-0">Rs.{{../ orderdetails.Totalprice}}</h6>
+                                            <h6 class="mb-0">Rs.{{subTotal product.DiscountedPrice this.quantity}}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +75,7 @@
             </div>
             {{/each}}
             <div class="row mt-4">
-                <div class="col">
+                <div class="col-md-7">
                     <div class="row justify-content-between">
                         <div class="col-auto">
                             <p class="mb-1 text-dark"><b>
@@ -127,10 +126,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-5">
+                    <h5 class=" text-right ml-auto">Discount Total = <span>{{orderdetails.Totalprice}}</span></h5>
+                </div>
             </div>
-            {{!-- <div class="row invoice ">
-                <button class="btn btn-primary" onclick="downloadInvoice({{json order}})">Download Invoice</button>
-            </div> --}}
         </div>
     </div>
 </div>
+
+
+

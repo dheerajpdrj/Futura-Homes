@@ -29,7 +29,8 @@
                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                 <div class="input-group-btn">
                                     <button onclick="quantityMinus('{{this.product._id}}')"
-                                        id="minus{{this.product._id}}" class="btn btn-sm btn-primary btn-minus qntvalue">
+                                        id="minus{{this.product._id}}"
+                                        class="btn btn-sm btn-primary btn-minus qntvalue">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
@@ -80,10 +81,38 @@
             </table>
         </div>
         <div class="col-lg-4">
-            <div class="mb-5 input-group">
+            <div class="mb-3 input-group">
                 <input type="text" class="form-control p-4" placeholder="Coupon Code" id="couponCode">
                 <div class="input-group-append">
                     <button class="btn btn-primary" onclick="applyCoupon()">Apply Coupon</button>
+                </div>
+            </div>
+            <div class="mb-5">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    Available Coupons
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Available Coupons</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                {{#each allcoupons}}
+                                <h3>{{this.Couponcode}}</h3>
+                                <p>{{this.Coupondescription}}</p>
+                                <hr>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card border-secondary mb-5">
@@ -154,9 +183,9 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded',quntityfunction,false)
-    
-    function quntityfunction(){
+    document.addEventListener('DOMContentLoaded', quntityfunction, false)
+
+    function quntityfunction() {
         let minusBtns = document.getElementsByClassName('qntvalue')
         console.log(minusBtns.length)
         for (let i = 0; i < minusBtns.length; i++) {

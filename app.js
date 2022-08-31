@@ -41,6 +41,9 @@ helpers:{
   },
   date:(d)=>{
 return d.toString().slice(0,16)
+  },
+  inc1:(n)=>{
+    return n+1
   }
 
 } }))

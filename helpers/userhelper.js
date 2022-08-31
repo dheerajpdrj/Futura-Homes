@@ -414,7 +414,7 @@ Helper = {
         return new Promise((resolve, response) => {
             try {
                 ordermodel.find({ userId: userid }).populate('Orderitems.product')
-                    .lean().then((orders) => {
+                    .lean().sort({createdAt:-1}).then((orders) => {
                         resolve(orders)
                     })
             } catch (err) {
@@ -497,6 +497,18 @@ Helper = {
             } catch (err) {
                 reject(err)
             }
+        })
+    },
+
+    cancelOrder:(orderId)=>{
+        return new Promise((resolve,reject)=>{
+            ordermodel.findByIdAndUpdate({_id:orderId},
+                {
+                   $set:{
+                    Deliverystatus:'Cancelled'} 
+                }).then((response)=>{
+                    resolve(response)
+                })
         })
     }
 }

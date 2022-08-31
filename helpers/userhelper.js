@@ -190,7 +190,7 @@ Helper = {
                     if (cart) {
                         if (cart.cartItems.length > 0) {
                             total = cart.cartItems.reduce((acc, curr) => {
-                                acc += curr.product.Price * curr.quantity
+                                acc += curr.product.DiscountedPrice * curr.quantity
                                 return acc
                             }, 0)
                         }
